@@ -99,7 +99,11 @@ def amanat_training(request):
 def fire_and_safety_management(request):
     return render(request, 'courses/fire-and-safety-management.html')
 
+def terms_and_conditions(request):
+    return render(request, 'terms-and-conditions.html')
 
+def privacy_policy(request):
+    return render(request, 'privacy-policy.html')
 
 def admin_login(request):
     if request.method == "POST":

@@ -73,6 +73,10 @@ path(
     name='fire_and_safety_management'
 ),
 
+    path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+
+
 
 path("admin-login/", views.admin_login, name="admin_login"),
 path('dashboard/', views.dashboard, name='dashboard'),

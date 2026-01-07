@@ -214,31 +214,31 @@
                     </h2>
                   </div>
                   <div class="mt-2 text-center index-courses">
-                    <a href="courses/electrical.html" class="course-link cat-1">Electrical and Technician</a>
-                    <a href="courses/ac-and-refrigeration.html" class="course-link cat-1"> AC & Refrigeration</a>
-                    <a href="courses/automobile.html" class="course-link cat-1">Two Wheeler
+                    <a href="{% url 'electrical' %}" class="course-link cat-1">Electrical and Technician</a>
+                    <a href="{% url 'ac_and_refrigeration' %}" class="course-link cat-1"> AC & Refrigeration</a>
+                    <a href="{% url 'automobile' %}" class="course-link cat-1">Two Wheeler
                       Mechanic</a>
-                    <a href="courses/automobile.html" class="course-link cat-1">Four Wheeler
+                    <a href="{% url 'automobile' %}" class="course-link cat-1">Four Wheeler
                       Mechanic</a>
-                    <a href="courses/mechanical-turner-fitter-cnc.html" class="course-link cat-1"> Turner | Fitter |
+                    <a href="{% url 'mechanical_turner_fitter_cnc' %}" class="course-link cat-1"> Turner | Fitter |
                       Welder</a>
-                    <a href="courses/mechanical-turner-fitter-cnc.html" class="course-link cat-1">CNC Operator & Programmer</a>
+                    <a href="{% url 'mechanical_turner_fitter_cnc' %}" class="course-link cat-1">CNC Operator & Programmer</a>
                     
                     
-                    <a href="courses/computer-hardware-and-networking.html" class="course-link cat-2"><i class="bi bi-motherboard fs-6 me-2"></i> PC Hardware
+                    <a href="{% url 'computer_hardware_and_networking' %}" class="course-link cat-2"><i class="bi bi-motherboard fs-6 me-2"></i> PC Hardware
                     Technician</a>
-                    <a href="courses/smart-phone-technician.html" class="course-link cat-2"><i class="bi bi-phone fs-6 me-2"></i>Smart Phone Technician</a>
-                    <a href="courses/computer-softwares.html" class="course-link cat-2"><i class="bi bi-laptop fs-6 me-2"></i>Computer Operator</a>
-                    <a href="courses/computer-softwares.html" class="course-link cat-2"><i class="bi bi-code-square fs-6 me-2"></i> Web Designing</a>
-                    <a href="courses/computer-softwares.html" class="course-link cat-2"> Digital Marketing</a>
+                    <a href="{% url 'smart_phone_technician' %}" class="course-link cat-2"><i class="bi bi-phone fs-6 me-2"></i>Smart Phone Technician</a>
+                    <a href="{% url 'computer_softwares' %}" class="course-link cat-2"><i class="bi bi-laptop fs-6 me-2"></i>Computer Operator</a>
+                    <a href="{% url 'computer_softwares' %}" class="course-link cat-2"><i class="bi bi-code-square fs-6 me-2"></i> Web Designing</a>
+                    <a href="{% url 'computer_softwares' %}" class="course-link cat-2"> Digital Marketing</a>
                     
                     <a href="#" class="course-link cat-2"><i class="bi bi-currency-rupee fs-6 me-2"></i> Financial
                       Accounting</a>
-                    <a href="courses/computer-softwares.html" class="course-link cat-2"><i class="bi bi-vector-pen fs-6 me-2"></i> Graphic
+                    <a href="{% url 'computer_softwares' %}" class="course-link cat-2"><i class="bi bi-vector-pen fs-6 me-2"></i> Graphic
                       Designing</a>
 
-                    <a href="courses/fashion-design-and-tailoring.html" class="course-link cat-3"><i class="bi bi-snow2 fs-6 me-2"></i> Fashion Designing</a>
-                    <a href="courses/beautician.html" class="course-link cat-3"><span class="me-2">
+                    <a href="{% url 'fashion_design_and_tailoring' %}" class="course-link cat-3"><i class="bi bi-snow2 fs-6 me-2"></i> Fashion Designing</a>
+                    <a href="{% url 'beautician' %}" class="course-link cat-3"><span class="me-2">
                         <svg width="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 89.45 122.88">
                           <path
@@ -246,15 +246,15 @@
                             fill-rule="evenodd" />
                         </svg>
                       </span> Beautician</a>
-                    <a href="courses/soft-skills.html" class="course-link cat-3"><i class="bi bi-briefcase-fill fs-6 me-2"></i> Soft Skills
+                    <a href="{% url 'soft_skills' %}" class="course-link cat-3"><i class="bi bi-briefcase-fill fs-6 me-2"></i> Soft Skills
                       Training</a>
-                    <a href="courses/teacher-training.html" class="course-link cat-4"><i class="bi bi-easel-fill fs-6 me-2"></i> Teacher
+                    <a href="{% url 'paramedical' %}" class="course-link cat-4"><i class="bi bi-easel-fill fs-6 me-2"></i> Teacher
                       Tranining</a>
-                    <a href="courses/paramedical.html" class="course-link cat-5"><i class="bi bi-clipboard2-pulse-fill fs-6 me-2"></i> Para
+                    <a href="{% url 'soft_skills' %}" class="course-link cat-5"><i class="bi bi-clipboard2-pulse-fill fs-6 me-2"></i> Para
                       Medical</a>
-                    <a href="courses/amanat-training.html" class="course-link cat-6"><i class="bi bi-rulers fs-6 me-2"></i> Amanat (Amin)
+                    <a href="{% url 'amanat_training' %}" class="course-link cat-6"><i class="bi bi-rulers fs-6 me-2"></i> Amanat (Amin)
                       Training</a>
-                    <a href="courses/e-and-safety-management.html" class="course-link cat-7"><i class="bi bi-rulers fs-6 me-2"></i> Fire & Safety Management</a>
+                    <a href="{% url 'fire_and_safety_management' %}" class="course-link cat-7"><i class="bi bi-rulers fs-6 me-2"></i> Fire & Safety Management</a>
                   </div>
                 </div>
               </div>
@@ -568,8 +568,8 @@
                 <div class="d-inline-block"><span class="d-none d-sm-inline">|</span> Powered By: MPASS FOUNDATION</div>
             </div>
             <div class="col-md-4">
-                <a class="l-link" href="terms-and-conditions.html" >Terms</a>
-                <a class="l-link" href="privacy-policy.html" >Privacy Policy</a>
+                <a class="l-link" href="{% url 'terms_and_conditions' %}" >Terms</a>
+                <a class="l-link" href="{% url 'privacy_policy' %}" >Privacy Policy</a>
             </div>
         </div>
 
