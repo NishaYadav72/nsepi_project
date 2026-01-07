@@ -1,0 +1,475 @@
+
+
+        
+
+<head>
+    {% load static %}
+
+        <link href="https:/cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link rel="stylesheet" href="../cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">    
+        <link rel="stylesheet" href="{% static 'css/global.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="assets/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com/">
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&amp;display=swap" rel="stylesheet">
+        </head>
+        <title>Apply for Branch | NSDPI</title><link href="{% static 'css/branch-apply.css' %}" rel="stylesheet"/><body>
+<div class="overlay branch-app-overlay">
+    <div class="overlay-inner">
+        <div class="text-center">
+            <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only d-none">Loading...</span>
+            </div>
+            <div class="mt-3">Processing your request...</div>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-column h-100">
+    <div>
+      <div class="top-bar d-lg-block">
+  <div class="container d-flex align-items-center fw-bold p-1">
+    <div class="contact">
+      
+    </div>
+    <div class="ms-auto d-none d-lg-block">
+      Email: <a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="fa898f8a8a95888eba94899e8a93d49394">[email&#160;protected]</a> | <a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="fe908d9a8e97ca8bbe99939f9792d09d9193">[email&#160;protected]</a>
+    </div>
+    
+    <div class="ms-auto d-flex align-items-center">
+    <div class="d-none d-lg-block me-2">04 Jan 2026</div>
+    <div class="dropdown">
+      <a class="btn btn-login dropdown-toggle btn-sm fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-box-arrow-in-right"></i> Login
+      </a>
+
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="app/center-login.html">Center Login</a></li>
+        <li><a class="dropdown-item" href="app/student-login.html">Student Login</a></li>
+        <li><a class="dropdown-item" href="app/coordinator-login.html">Coordinator Login</a></li>
+      </ul>
+    </div>
+    </div>
+    <!-- <a href="branch-application" class="apply-branch ms-auto">Apply for Branch</a> -->
+  </div>
+</div>
+
+<div class="d-none d-lg-block">
+  <div class="container py-2 d-flex">
+    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo-nsdpi.png'%}" width="230" height="80"/></a>
+    <div class="d-flex ms-auto">
+      <img class="navbar-logos" src="{% static 'images/logos/akam.png'%}" alt="Azadi Ka Amrit Mahotsav" />
+      <img class="navbar-logos" src="{% static 'images/logos/g20.png'%}" alt="G20 India" />            
+      <img class="navbar-logos" src="{% static 'images/logos/skill-india2.png'%}" alt="Sill India" />
+    </div>
+  </div>
+</div>
+
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-nsdpi">
+  <div class="container">
+    <a class="navbar-brand d-lg-none" href="{% url 'home' %}"><img src="{% static 'images/logo-nsdpi.png' %}" width="230" height="80"/></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse w-100 custom-nav" id="navbarNav">
+      <ul class="navbar-nav w-100 justify-content-between">
+        <li class="nav-item">
+          <a class="nav-link home" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+         <a class="nav-link about" href="{% url 'about' %}">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link courses" href="{% url 'courses' %}">Courses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link student-zone" href="#">Student Zone</a>
+          <ul class="nav-sub-menu">
+            <li>
+              <a class="nav-link student-zone" href="{% url 'student_login' %}">Student Login</a>
+            </li>
+            <li>
+              <a class="nav-link student-zone" href="{% url 'admission_verification'}">Admission Verification</a>
+            </li>
+            <li>
+              <a class="nav-link student-zone" href="admit-card.html">Admit Card Download</a>
+            </li>
+            <li>
+              <a class="nav-link student-zone" href="verify_certificate.html">Verify Certificate</a>
+            </li>
+            <li>
+              <a class="nav-link student-zone" href="results.html">Student's Result</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link placements" href="{% url 'placements'%}">Placements</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link branches" href="{% url 'branches' %}">Branches</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link contact" href="{% url 'contact' %}">Contact Us</a>
+        </li>
+        <li class="nav-item branch-apply-nav-item">
+          <a class="nav-link contact" href="{% url 'branch_application' %}">Apply for Branch</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>    </div>
+    <main class="flex-grow-1">
+        <div class="container-fluid py-5 primary-gradient-bg">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-md-3 p-4">
+                        <div class="facilities">
+                            <h2 class="bfac">Branch Facilities</h2>
+                            <div class="facility fw-semibold">
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Authorization Certificate</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Organization Certificate</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> ISO 9001:2015 Certificate</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Branch Login Portal</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Student Login Portal</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Course Prospectus</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Course Books</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Syllabus PDF</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> List On Google</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Branch Referal Code</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Add Empolyees</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Advertising Designs</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Free PDF Study Materials</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Sub Center Option*</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Free Renewal*</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Online Admit Card Download</div>
+                                <div class="p-2"><i class="bi bi-check2-square me-3"></i> Online Certificate Download</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 p-4 application-wrapper">
+                        <div class="border rounded p-4">
+                            <h2 class="gradient">Application Form</h2>
+                            <p>Please fill up the below application form to apply for a branch.</p>
+                            <div class="error-wrapper alert alert-danger" id="errorWrapper"></div>
+                            <div class="success-wrapper alert alert-success" id="successWrapper">
+                                Thank you for your application, we will get in touch with you.
+                                Please note down your application reference number for future: 
+                                    <span class="refNumber"></span>
+                            </div>
+                            <form id="branchApplication" method="post" enctype="multipart/form-data">
+                                <div>
+                                    <div class="sec-header">Personal Information</div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Your Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" required/>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="fathersName" class="form-label">Father's Name</label>
+                                            <input type="text" class="form-control" id="fathersName" name="fathersName" required/>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="dob" class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" id="dob" name="dob" placeholder="DD/MM/YYYY" maxlength="10" required>
+                                        </div>
+                                        <div class="col-md-6  col-lg-2 mb-3">
+                                            <label for="gender" class="mb-2 fw-semibold">Gender</label>
+                                            <select class="form-select" id="gender" name="gender" required>
+                                                <option selected disabled value="">Gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Others">Others</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6  col-lg-3 mb-3">
+                                            <label for="mobileNumber" class="form-label">Primary Mobile No.</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">+91</span>
+                                                <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" maxlength="10" minlength="10" required/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6  col-lg-3 mb-3">
+                                            <label for="whatsappNumber" class="form-label">WhatsApp No.</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">+91</span>
+                                                <input type="text" class="form-control" id="whatsappNumber" name="whatsappNumber" maxlength="10" minlength="10" required/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="email" class="form-label">Email Id</label>
+                                            <input type="email" class="form-control" id="email" name="email"  required/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="sec-header">Center Information</div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="fathersName" class="form-label">Center Name</label>
+                                            <input type="text" class="form-control" id="centerName" name="centerName" required/>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="centerAddress" name="centerAddress" required/>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="centerState" class="mb-2 fw-semibold">State</label>
+                                            <select class="form-select" id="centerState" name="centerState" required>
+                                                <option selected disabled>Select State</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="centerDistrict" class="mb-2 fw-semibold">District</label>
+                                            <select class="form-select" id="centerDistrict" name="centerDistrict" required>
+                                                <option selected disabled>Select District</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Block</label>
+                                            <input type="text" class="form-control" id="centerBlock" name="centerBlock" required/>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Post Office</label>
+                                            <input type="text" class="form-control" id="centerPO" name="centerPO" required/>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Police Station</label>
+                                            <input type="text" class="form-control" id="centerPS" name="centerPS" required/>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Pin Code</label>
+                                            <input type="text" class="form-control" id="centerPin" name="centerPin" minlength="6" maxlength="6" required/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="affiliationCategory">
+                                    <div class="sec-header">Affiliation Category</div>
+                                    <div class="row">
+                                        <div class="col-md-12 form-check">
+                                            <input type="checkbox" name="affiliationCategory[]" class="aff-category form-check-input" id="CNIT" value="COMPUTER_AND_IT" />
+                                            <label for="CNIT" class="form-check-lable">Computer and IT Training Center (₹5000/-)</label>
+                                        </div>
+                                        <div class="col-md-12 form-check">                                            
+                                            <input type="checkbox" name="affiliationCategory[]" class="aff-category form-check-input" id="BNSK" value="BEAUTICIAN_SOFT_SKILL" />
+                                            <label for="BNSK" class="form-check-lable">Beautician, Tailoring and Fashion Designing Training centre (₹5000/-)</label>
+                                        </div>
+                                        <div class="col-md-12 form-check">                                            
+                                            <input type="checkbox" name="affiliationCategory[]" class="aff-category form-check-input" id="PARAMEDICAL" value="PARAMEDICAL" />
+                                            <label for="PARAMEDICAL" class="form-check-lable">Paramedical Training Center (₹10000/-)</label>
+                                        </div>
+                                        <div class="col-md-12 form-check">                                            
+                                            <input type="checkbox" name="affiliationCategory[]" class="aff-category form-check-input" id="TEACHER_TRAINING" value="TEACHER_TRAINING">
+                                            <label for="TEACHER_TRAINING" class="form-check-lable">Teacher Training Center (₹10000/-)</label>
+                                        </div>
+                                        <div class="col-md-12 form-check">                                            
+                                            <input type="checkbox" name="affiliationCategory[]" class="aff-category form-check-input" id="AMANAT_TRAINING" value="AMANAT_TRAINING">
+                                            <label for="AMANAT_TRAINING" class="form-check-lable">Amanat Training Center (₹10000/-)</label>
+                                        </div>
+                                        <div class="col-md-12 form-check">                                            
+                                            <input type="checkbox" name="affiliationCategory[]" class="aff-category form-check-input" id="MECHANICAL_AND_TECHNICIAN" value="MECHANICAL_AND_TECHNICIAN">
+                                            <label for="MECHANICAL_AND_TECHNICIAN" class="form-check-lable">Electrical & Mechanical Training Center  (₹10000/-)</label>
+                                        </div>
+                                        <div class="col-md-12 form-check">                                            
+                                            <input type="checkbox" name="affiliationCategory[]" class="aff-category form-check-input" id="FIRE_AND_SAFETY" value="FIRE_AND_SAFETY">
+                                            <label for="FIRE_AND_SAFETY" class="form-check-lable">Fire & Safety Management  (₹10000/-)</label>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 total-amt-wrap">Total Amount: <span class="fw-bold" id="totalAmount"></span></div>
+                                </div>
+                                <div>
+                                    <div class="sec-header">Co-ordinator Information</div>
+                                    <div class="row">
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Co-ordinator Name</label>
+                                            <input type="text" class="form-control" id="referrerName" name="referrerName"/>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Co-ordinator Mobile No</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">+91</span>
+                                                <input type="text" class="form-control" id="referrerContactNo" name="referrerContactNo" maxlength="10" minlength="10"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6  col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Co-ordinator Code</label>
+                                            <input type="text" class="form-control" id="referrerCode" name="referrerCode"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="sec-header">Required Documents</div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Director Photo</label>
+                                            <input type="file" class="form-control" 
+                                                accept="image/x-png,image/jpeg"
+                                                id="directorPhoto" name="director_photo" required/>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Director Signature</label>
+                                            <input type="file" class="form-control" 
+                                                accept="image/x-png,image/jpeg"
+                                                id="directorSignature" name="director_sign" required/>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Aadhar / Vorter ID / Driving License</label>
+                                            <input type="file" class="form-control" 
+                                                accept="image/x-png,image/jpeg"
+                                                id="directorPhoto" name="director_id_photo" required/>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <label for="name" class="form-label">Latest Qualification Certificate</label>
+                                            <input type="file" class="form-control"
+                                                accept="image/x-png,image/jpeg"
+                                                id="directorPhoto" name="director_qualification" required/>
+                                        </div>
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <label for="labPhoto" class="form-label">Lab Photo</label>
+                                            <input type="file" class="form-control"
+                                                accept="image/x-png,image/jpeg"
+                                                id="labPhoto" name="lab_photo" required/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="my-3">
+                                    <button class="btn btn-success me-3" name="submit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div>
+      <div class="footer">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12 col-lg-3 text-center">
+                <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png'%}" width="130" /></a>
+                <div class="social my-4 fs-4">
+                    <a target="_blank" href="https://www.facebook.com/mpassfoundation"><i class="bi bi-facebook m-1"></i></a>
+                    <!-- <a target="_blank" href="#"><i class="bi bi-twitter m-1"></i></a> -->
+                    <a target="_blank" href="https://wa.link/5kkao5"><i class="bi bi-whatsapp m-1"></i></a>
+                    <a target="_blank" href="https://www.instagram.com/nsdpi4u"><i class="bi bi-instagram m-1"></i></a>
+                    <a target="_blank" href="https://www.youtube.com/@mpassfamily6553"><i class="bi bi-youtube m-1"></i></a>
+                    <!-- <a href="#"><i class="bi bi-linkedin m-1"></i></a> -->
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div href="#" class="title fs-3">Trending Courses</div>
+                <div class="py-3 d-flex flex-column">
+                    <a href="{% url 'computer_softwares' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> DCA</a>
+                    <a href="{% url 'computer_softwares' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> ADCA</a>
+                    <a href="{% url 'computer_softwares' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> PGDCA</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma in Financial Accounting</a>
+                    <a href="{% url 'computer_hardware_and_networking' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma in Computer Hardware and Networking</a>
+                    <a href="{% url 'electrical' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Certificate In Electrician (CE)</a>
+                    <a href="{% url 'electrical' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Advance Diploma Course In Electrician (ADCE)</a>
+                    <a href="{% url 'fashion_design_and_tailoring' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Certificate Course in Tailoring</a>
+                    <a href="{% url 'fashion_design_and_tailoring' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma in Tailoring Course</a>
+                    <a href="{% url 'beautician' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma In Beauty Parlour</a>
+ <a href="{% url 'teacher_training' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Nursery Teacher Training Course</a>
+                    <a href="{% url 'teacher_training' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma In Yoga Education</a>
+                    <a href="{% url 'fire_and_safety_management' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Fire and Safety Management</a>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div href="#" class="title fs-3">Course Categories</div>
+                <div class="py-3 d-flex flex-column">
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Computer Education Courses</a>
+                    <a href="{% url 'beautician' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Beauty and Wellness Courses</a>
+                    <a href="{% url 'teacher_training' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Teacher Training Courses</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Paramedical Courses</a>
+                    <a href="courses/amanat-training.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Amanat Training Courses</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Mechanical & Electrical Courses</a>
+                    <a href="courses/soft-skills.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Skill Development Courses</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Job Oriented Courses</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> CSR Courses </a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Govt. Approved Courses </a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Online & Offline Courses </a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Short Term Courses (Certification Courses)</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Long Term Course (Diploma Courses)</a>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="title fs-3">Quick Links</div>
+                <div class="py-3 d-flex flex-column">
+                    <a href="app/student-login.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Student Login</a>
+                    <a href="app/center-login.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Branch Login</a>
+                    <a href="{% url 'branch_application' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Apply for a
+                        Branch</a>
+                    <a href="branches.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Our Branches</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Download</a>
+                </div>
+                <div class="title fs-3">Contact Us</div>
+                <div class="py-3">
+                    <div class="py-1 d-flex align-items-center">
+                        <i class="bi bi-telephone-fill me-3"></i>
+                        <div class="d-flex flex-wrap">
+                            <a href="tel:+919031003154">+91-9031003154</a>
+                        </div>
+                    </div>
+                    <div class="py-1 d-flex align-items-center">
+                        <i class="bi bi-envelope-open-fill me-3"></i>
+                        <div class="d-flex flex-wrap">
+                            <a href="cdn-cgi/l/email-protection.html#dba8aeababb4a9af9bb5a8bfabb2f5b2b5" class="">
+                                <span><span class="__cf_email__" data-cfemail="3b484e4b4b54494f7b55485f4b52155255">[email&#160;protected]</span></span>
+                            </a>,&nbsp;
+                            <a href="cdn-cgi/l/email-protection.html#deb0adbaaeb7eaab9eb9b3bfb7b2f0bdb1b3" class="">
+                                <span><span class="__cf_email__" data-cfemail="fc928f988c95c889bc9b919d9590d29f9391">[email&#160;protected]</span></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="py-1 d-flex align-items-center">
+                        <i class="bi bi-geo-alt-fill me-3"></i>
+                        <div class="d-flex flex-column office-addr">
+                            <div class="mb-2">
+                            203, A10, Priyedarshni Vihar, <br> Laxmi Nagar<br> New Delhi- 110092 (India)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <a href="https://www.indiapost.gov.in/_layouts/15/dop.portal.tracking/trackconsignment.aspx"
+                        target="_blank"><img class="track-image" src="{% static 'images/track.jpg'%}" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer-bottom">
+    <div class="container text-center p-2">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="d-inline-block">Copyright
+                    2026 &copy;NSDPI. All Right Reserved</div>
+                    
+                <div class="d-inline-block"><span class="d-none d-sm-inline">|</span> Powered By: MPASS FOUNDATION</div>
+            </div>
+            <div class="col-md-4">
+                <a class="l-link" href="terms-and-conditions.html" >Terms</a>
+                <a class="l-link" href="privacy-policy.html" >Privacy Policy</a>
+            </div>
+        </div>
+    </div>
+</div>    </div>
+  </div>
+
+
+  
+        <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="../cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="../cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+        <script src="../code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <script src="js/main.js"></script>
+          <script src="js/statelist.js"></script>
+  <script src="js/branch-application.js"></script>
+  
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"bc89f8a0048f41f4b560e6b553a9aef0","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>

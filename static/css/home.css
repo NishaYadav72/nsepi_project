@@ -1,0 +1,152 @@
+.card {
+  padding: 10px;
+  border: 1px solid #b6622e;
+  border-radius: 2px;
+  box-shadow: 5px 5px 0px 0px #a8b4ff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease;
+  cursor: default;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 10px 10px 0px 0px #a8b4ff;
+}
+.card .header {
+  background: #673ab7;
+  position: relative;
+  left: -20px;
+  padding: 10px;
+  color: white;
+  border-radius: 2px;
+}
+.card .header.header-2 {
+  background-color: #3f51b5;
+}
+.card .header.header-3 {
+  background-color: #377cb3;
+}
+.card p {
+  flex: 1;
+  margin-top: 10px;
+}
+.card a {
+  background-color: #ef6800;
+  margin-left: auto;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 2px 10px;
+  font-size: 12px;
+}
+.card a:hover {
+  color: #ef6800;
+  background-color: transparent;
+  border: 1px solid;
+}
+
+.logos {
+  width: 170;
+  margin: 0 20px;
+}
+
+.logos.bbbp {
+  width: 110px;
+}
+.logos.niti {
+  width: 270px;
+}
+.logos.iaf {
+  width: 220px;
+}
+
+.lifecycle .icon-wrap {
+  background-color: #d0b6ff;
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  padding: 20px;
+  font-size: 30;
+  margin: 10px;
+  border: 2px dashed #673ab7;
+  position: relative;
+}
+
+.lifecycle .bar {
+  position: absolute;
+  height: 90%;
+  width: 3px;
+  background-color: #673ab7;
+  display: block;
+  top: 20px;
+  left: 43px;
+}
+
+.lifecycle-inner {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.lc-content-wrap {
+  display: flex;
+  align-items: center;
+}
+.lc-content-wrap .title {
+  font-weight: 700;
+}
+.lc-content-wrap .content {
+  text-align: left;
+  padding: 10px;
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .lifecycle-inner {
+    flex-direction: row;
+  }
+  .lifecycle-inner {
+    
+  }
+  .lc-content-wrap {
+    flex-direction: column;
+    align-items: center;
+  }
+  .lc-content-wrap .content {
+    text-align: center;
+  }
+  .lifecycle .bar {
+    height: 3px;
+    width: 80%;
+    top: 45px;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+  .why-nsdpi {
+    position: relative;
+    right: 30px;
+  }
+  
+  .tcourses {
+    position: relative;
+    left: 30px;
+  }
+}
+
+.why-nsdpi {
+  border-radius: 8px;
+  background: linear-gradient(155deg, #edfffd, #e6d8ff);
+  /* position: relative;
+  right: 30px; */
+  border: 2px solid;
+}
+
+.tcourses {
+  background-color: #C5CAE9;
+  border-radius: 10px;
+  /* position: relative;
+  left: 30px; */
+  background: linear-gradient(145deg, #e6e9ff, #f7e5e0);
+  border: 2px solid;
+}

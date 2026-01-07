@@ -1,0 +1,21 @@
+{% extends 'adminpanel/base.html' %}
+
+{% block content %}
+<h2>Your Profile</h2>
+<hr>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Username</label>
+        <input type="text" class="form-control" value="{{ request.user.username }}" disabled>
+    </div>
+
+    <div class="mb-3">
+        <label>New Password</label>
+        <input type="password" name="password" class="form-control">
+    </div>
+
+    <button class="btn btn-primary">Update Password</button>
+</form>
+{% endblock %}

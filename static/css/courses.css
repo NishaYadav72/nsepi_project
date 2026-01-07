@@ -1,0 +1,58 @@
+.course-details {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.course-info .course-heading, .career-heading {
+    font-weight: 700;
+    color: #2196F3;
+    border: 1px dashed;
+    padding: 5px 10px;
+}
+
+.course-heading.cat-1{color: #356982;}
+.course-heading.cat-2{color: #673AB7;}
+.course-heading.cat-3{color: #FF9800;}
+.course-heading.cat-4{color: #2196F3;}
+.course-heading.cat-5{color: #13978b;}
+.course-heading.cat-6{color: #4CAF50;}
+.course-heading.cat-7{color: #b33f3f;}
+
+
+.career-heading {
+    background-color: #ffd18d;
+    color: #0088f5;
+}
+
+
+.course-details ul,
+.career-details ul {
+    padding: 10px;
+}
+
+.career-details ul li{
+    background: #c8f9ff;
+    padding: 5px 8px;
+    border-radius: 6px;
+    margin: 8px 4px;
+}
+
+.career-details i {
+    color: #02acb8;
+}
+
+.course-heading span {
+    color: #e77817;
+}
+
+.course-details li,
+.career-details li {
+    list-style: none;
+}
+
+.course-meta {
+    display: flex;
+    padding: 0 10px;
+    font-weight: 700;
+    color: #d80c22;
+}
