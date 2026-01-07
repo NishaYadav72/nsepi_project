@@ -11,6 +11,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout
 from .models import Course, Subject, Student
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Count
 
 
 def home(request):
@@ -135,13 +136,29 @@ def dashboard(request):
     return render(request, "dashboard.html")
 
 
-# ✅ Dashboard
 @login_required
-def admin_dashboard(request):
-    return render(request, 'adminpanel/dashboard.html')
+def dashboard(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Access Denied")
+
+    total_courses = Course.objects.count()
+    total_subjects = Subject.objects.count()
+    total_students = Student.objects.count()
+
+    # Courses with number of subjects
+    courses_with_subjects = Course.objects.annotate(subject_count=Count('subject'))
+    course_subjects = [(c.name, c.subject_count) for c in courses_with_subjects]
+
+    context = {
+        'total_courses': total_courses,
+        'total_subjects': total_subjects,
+        'total_students': total_students,
+        'course_subjects': course_subjects
+    }
+
+    return render(request, 'adminpanel/dashboard.html', context)
 
 
-# ✅ Profile (Password Change)
 @login_required
 def admin_profile(request):
     if request.method == 'POST':
@@ -156,12 +173,18 @@ def admin_profile(request):
     return render(request, 'adminpanel/profile.html')
 
 
+
 @login_required
 def add_course(request):
     if request.method == "POST":
-        course_name = request.POST.get('course_name')
+        course_name = request.POST.get('course_name').strip()
         if course_name:
-            Course.objects.create(name=course_name)
+            # Check if course already exists (case-insensitive)
+            if Course.objects.filter(name__iexact=course_name).exists():
+                messages.warning(request, f"Course '{course_name}' already exists!")
+            else:
+                Course.objects.create(name=course_name)
+                messages.success(request, f"Course '{course_name}' added successfully!")
         return redirect('add_course')
 
     courses = Course.objects.all().order_by('-id')
@@ -191,13 +214,23 @@ def add_subject(request):
 
     if request.method == "POST":
         course_id = request.POST.get('course')
-        subject_name = request.POST.get('subject_name')
+        subject_names = request.POST.getlist('subjects[]')  # multiple subjects
 
-        if course_id and subject_name:
-            Subject.objects.create(
-                course_id=course_id,
-                name=subject_name
-            )
+        if course_id and subject_names:
+            course = Course.objects.get(id=course_id)
+            added_any = False
+
+            for name in subject_names:
+                name = name.strip()
+                if not Subject.objects.filter(course=course, name__iexact=name).exists():
+                    Subject.objects.create(course=course, name=name)
+                    added_any = True
+                else:
+                    messages.warning(request, f"'{name}' is already added for course '{course.name}'")
+
+            if added_any:
+                messages.success(request, "Subjects added successfully!")
+
             return redirect('add_subject')
 
     return render(request, 'adminpanel/add_subject.html', {
@@ -228,8 +261,9 @@ def edit_subject(request, id):
     })
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
 def add_student(request):
+    courses = Course.objects.all()  # <-- fetch all courses
+
     if request.method == "POST":
         Student.objects.create(
             name=request.POST.get('name'),
@@ -239,14 +273,16 @@ def add_student(request):
             address=request.POST.get('address'),
             tenth_marksheet=request.FILES.get('tenth_marksheet'),
             twelfth_marksheet=request.FILES.get('twelfth_marksheet'),
-            aadhaar_card=request.FILES.get('aadhaar_card'),  # ✅ NEW
+            aadhaar_card=request.FILES.get('aadhaar_card'),  
             photo=request.FILES.get('photo'),
         )
         return redirect('add_student')
 
     students = Student.objects.all().order_by('-id')
     return render(request, 'adminpanel/add_student.html', {
-        'students': students
+        'students': students,
+        'courses': courses
+
     })
 
 def edit_student(request, id):

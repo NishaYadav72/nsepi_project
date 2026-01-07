@@ -32,6 +32,7 @@ class Student(models.Model):
     phone = models.CharField(max_length=15)
     father_name = models.CharField(max_length=100)
     address = models.TextField()
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
 
     tenth_marksheet = models.ImageField(
         upload_to='students/10th/',

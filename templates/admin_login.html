@@ -1,44 +1,366 @@
-<!DOCTYPE html>
-<html>
+
 <head>
-    <title>Admin Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+{% load static %}
+        <link href="https:/cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link rel="stylesheet" href="https:/cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">    
+        <link rel="stylesheet" href="{% static 'css/global.css' %}">
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card shadow">
-                <div class="card-header text-center">
-                    <h4>Admin Login</h4>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="assets/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com/">
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&amp;display=swap" rel="stylesheet">
+        </head>
+        <title>Branches | NSDPI</title><body>
+<div class="d-flex flex-column h-100">
+    <div>
+      <div class="top-bar d-lg-block">
+  <div class="container d-flex align-items-center fw-bold p-1">
+    <div class="contact">
+      <i class="bi bi-telephone-fill me-2"></i> Helpline:
+      <a href="tel:+919031003154">+91-9031003154</a>
+    </div>
+    <div class="ms-auto d-none d-lg-block">
+      Email: <a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="2f5c5a5f5f405d5b6f415c4b5f46014641">[email&#160;protected]</a> | <a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="a1cfd2c5d1c895d4e1c6ccc0c8cd8fc2cecc">[email&#160;protected]</a>
+    </div>
+    
+    <div class="ms-auto d-flex align-items-center">
+    <div class="d-none d-lg-block me-2">04 Jan 2026</div>
+    <div class="dropdown">
+      <a class="btn btn-login dropdown-toggle btn-sm fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-box-arrow-in-right"></i> Login
+      </a>
+
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="app/center-login.html">Center Login</a></li>
+        <li><a class="dropdown-item" href="app/student-login.html">Student Login</a></li>
+        <li><a class="dropdown-item" href="app/coordinator-login.html">Coordinator Login</a></li>
+      </ul>
+    </div>
+    </div>
+    <!-- <a href="branch-application" class="apply-branch ms-auto">Apply for Branch</a> -->
+  </div>
+</div>
+
+<div class="d-none d-lg-block">
+  <div class="container py-2 d-flex">
+    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo-nsdpi.png'%}" width="230" height="80"/></a>
+    <div class="d-flex ms-auto">
+      <img class="navbar-logos" src="{% static 'images/logos/akam.png'%}" alt="Azadi Ka Amrit Mahotsav" />
+      <img class="navbar-logos" src="{% static 'images/logos/g20.png'%}" alt="G20 India" />            
+      <img class="navbar-logos" src="{% static 'images/logos/skill-india2.png'%}" alt="Sill India" />
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-nsdpi">
+  <div class="container">
+    <a class="navbar-brand d-lg-none" href="{% url 'home' %}"><img src="{% static 'images/logo-nsdpi.png' %}" width="230" height="80"/></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse w-100 custom-nav" id="navbarNav">
+      <ul class="navbar-nav w-100 justify-content-between">
+        <li class="nav-item">
+          <a class="nav-link home" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+         <a class="nav-link about" href="{% url 'about' %}">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link courses" href="{% url 'courses' %}">Courses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link student-zone" href="#">Student Zone</a>
+          <ul class="nav-sub-menu">
+            <li>
+              <a class="nav-link student-zone" href="{% url 'student_login' %}">Student Login</a>
+            </li>
+            <li>
+              <a class="nav-link student-zone" href="{% url 'admission_verification'}">Admission Verification</a>
+            </li>
+            <li>
+              <a class="nav-link student-zone" href="admit-card.html">Admit Card Download</a>
+            </li>
+            <li>
+              <a class="nav-link student-zone" href="verify_certificate.html">Verify Certificate</a>
+            </li>
+            <li>
+              <a class="nav-link student-zone" href="results.html">Student's Result</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link placements" href="{% url 'placements'%}">Placements</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link branches" href="{% url 'branches' %}">Branches</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link contact" href="{% url 'contact' %}">Contact Us</a>
+        </li>
+        <li class="nav-item branch-apply-nav-item">
+          <a class="nav-link contact" href="{% url 'branch_application' %}">Apply for Branch</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>    </div>
+    
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-8">
+
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+
+          <h3 class="text-center fw-bold mb-4 gradient">
+            Admin Login
+          </h3>
+
+          {% if error %}
+            <div class="alert alert-danger text-center">
+              {{ error }}
+            </div>
+          {% endif %}
+
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Username</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-person-fill"></i>
+                </span>
+                <input type="text" name="username"
+                       class="form-control"
+                       placeholder="Enter admin username" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Password</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-lock-fill"></i>
+                </span>
+                <input type="password" name="password"
+                       class="form-control"
+                       placeholder="Enter password" required>
+              </div>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-login btn-lg">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+              </button>
+            </div>
+          </form>
+
+          <div class="text-center text-muted mt-4 small">
+            © 2026 NSEPI. All rights reserved
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+    <div>
+      <div class="footer">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12 col-lg-3 text-center">
+                <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png'%}" width="130" /></a>
+                <div class="social my-4 fs-4">
+                    <a target="_blank" href="https://www.facebook.com/mpassfoundation"><i class="bi bi-facebook m-1"></i></a>
+                    <!-- <a target="_blank" href="#"><i class="bi bi-twitter m-1"></i></a> -->
+                    <a target="_blank" href="https://wa.link/5kkao5"><i class="bi bi-whatsapp m-1"></i></a>
+                    <a target="_blank" href="https://www.instagram.com/nsdpi4u"><i class="bi bi-instagram m-1"></i></a>
+                    <a target="_blank" href="https://www.youtube.com/@mpassfamily6553"><i class="bi bi-youtube m-1"></i></a>
+                    <!-- <a href="#"><i class="bi bi-linkedin m-1"></i></a> -->
                 </div>
-                <div class="card-body">
-
-                    {% if error %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endif %}
-
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label>Username</label>
-                            <input type="text" name="username" class="form-control" required>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div href="#" class="title fs-3">Trending Courses</div>
+                <div class="py-3 d-flex flex-column">
+                    <a href="{% url 'computer_softwares' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> DCA</a>
+                    <a href="{% url 'computer_softwares' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> ADCA</a>
+                    <a href="{% url 'computer_softwares' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> PGDCA</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma in Financial Accounting</a>
+                    <a href="{% url 'computer_hardware_and_networking' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma in Computer Hardware and Networking</a>
+                    <a href="{% url 'electrical' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Certificate In Electrician (CE)</a>
+                    <a href="{% url 'electrical' %}l" class="py-1"><i class="bi bi-caret-right-fill"></i> Advance Diploma Course In Electrician (ADCE)</a>
+                    <a href="{% url 'fashion_design_and_tailoring' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Certificate Course in Tailoring</a>
+                    <a href="{% url 'fashion_design_and_tailoring' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma in Tailoring Course</a>
+                    <a href="{% url 'beautician' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma In Beauty Parlour</a>
+                     <a href="{% url 'teacher_training' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Nursery Teacher Training Course</a>
+                    <a href="{% url 'teacher_training' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Diploma In Yoga Education</a>
+                    <a href="{% url 'fire_and_safety_management' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Fire and Safety Management</a>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div href="#" class="title fs-3">Course Categories</div>
+                <div class="py-3 d-flex flex-column">
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Computer Education Courses</a>
+                    <a href="{% url 'beautician' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Beauty and Wellness Courses</a>
+                    <a href="{% url 'teacher_training' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Teacher Training Courses</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Paramedical Courses</a>
+                    <a href="courses/amanat-training.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Amanat Training Courses</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Mechanical & Electrical Courses</a>
+                    <a href="courses/soft-skills.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Skill Development Courses</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Job Oriented Courses</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> CSR Courses </a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Govt. Approved Courses </a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Online & Offline Courses </a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Short Term Courses (Certification Courses)</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Long Term Course (Diploma Courses)</a>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="title fs-3">Quick Links</div>
+                <div class="py-3 d-flex flex-column">
+                    <a href="app/student-login.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Student Login</a>
+                    <a href="app/center-login.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Branch Login</a>
+                    <a href="{% url 'branch_application' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Apply for a
+                        Branch</a>
+                    <a href="{% url 'branches' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Our Branches</a>
+                    <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Download</a>
+                </div>
+                <div class="title fs-3">Contact Us</div>
+                <div class="py-3">
+                    <div class="py-1 d-flex align-items-center">
+                        <i class="bi bi-telephone-fill me-3"></i>
+                        <div class="d-flex flex-wrap">
+                            <a href="tel:+919031003154">+91-9031003154</a>
                         </div>
-
-                        <div class="mb-3">
-                            <label>Password</label>
-                            <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="py-1 d-flex align-items-center">
+                        <i class="bi bi-envelope-open-fill me-3"></i>
+                        <div class="d-flex flex-wrap">
+                            <a href="cdn-cgi/l/email-protection.html#b7c4c2c7c7d8c5c3f7d9c4d3c7de99ded9" class="">
+                                <span><span class="__cf_email__" data-cfemail="e0939590908f9294a08e93849089ce898e">[email&#160;protected]</span></span>
+                            </a>,&nbsp;
+                            <a href="cdn-cgi/l/email-protection.html#a6c8d5c2d6cf92d3e6c1cbc7cfca88c5c9cb" class="">
+                                <span><span class="__cf_email__" data-cfemail="c2acb1a6b2abf6b782a5afa3abaeeca1adaf">[email&#160;protected]</span></span>
+                            </a>
                         </div>
-
-                        <button class="btn btn-primary w-100">Login</button>
-                    </form>
-
+                    </div>
+                    <div class="py-1 d-flex align-items-center">
+                        <i class="bi bi-geo-alt-fill me-3"></i>
+                        <div class="d-flex flex-column office-addr">
+                            <div class="mb-2">
+                            203, A10, Priyedarshni Vihar, <br> Laxmi Nagar<br> New Delhi- 110092 (India)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <a href="https://www.indiapost.gov.in/_layouts/15/dop.portal.tracking/trackconsignment.aspx"
+                        target="_blank"><img class="track-image" src="{% static 'images/track.jpg'%}" /></a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="footer-bottom">
+    <div class="container text-center p-2">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="d-inline-block">Copyright
+                    2026 &copy;NSDPI. All Right Reserved</div>
+                    
+                <div class="d-inline-block"><span class="d-none d-sm-inline">|</span> Powered By: MPASS FOUNDATION</div>
+            </div>
+            <div class="col-md-4">
+                <a class="l-link" href="{% url 'terms_and_conditions' %}" >Terms</a>
+                <a class="l-link" href="{% url 'privacy_policy' %}" >Privacy Policy</a>
+            </div>
+        </div>
 
+
+        <a href="{% url 'admin_login' %}" class="btn btn-primary">
+  Admin Login
+</a>
+
+    </div>
+</div>    </div>
+  </div>
+
+
+  
+        <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="../cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="../cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+        <script src="../code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <script src="js/main.js"></script>
+          <script src="js/statelist.js"></script>
+  <script>
+    $(document).ready(function() {
+      var stateList  = getStateListHTML();
+      $("#stateList").html(stateList);
+      $("#stateList").on("change", function() {
+        $("#submit").attr("disabled", true);
+        $("#districtList").html(getDistrictListHTML($(this).val()))
+      });
+
+      $("#districtList").on("change", function() {
+        console.log(!!$(this).val());
+          $("#submit").attr("disabled", !$(this).val());
+      });
+
+      $("#submit").click(function(e){
+        // $(".errorAlert").show();
+        const formData = new FormData($("#branchSearchForm")[0])
+        console.log(formData);
+        $("#results").hide();
+        $(".errorAlert").hide();
+        $.ajax({
+          type: 'POST',
+          url: "api/branch-search",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (data, textStatus, xhr) {
+            data = JSON.parse(data);
+            console.log(data);
+            if(data && data?.length) {
+                let resStr = "<h3>Our Branches</h3>";
+                data.forEach(function(branch) {
+                  resStr += `
+                    <div class="col-md-4 p-2">
+                      <div class="card branch-card p-3 h-100">
+                        <div class="fw-bold">${branch.centerName}</div>
+                        <div class="fw-semibold">${branch.centerAddress}</div>
+                        <div class="fw-semibold">${branch.centerDistrict}</div>
+                        <div>${[branch.centerState, branch.centerPinCode].join("-")}</div>
+                      </div>
+                    </div>
+                  `;
+                });  
+                $("#results").html(resStr).show();
+            } else {
+              $(".errorAlert").html("No Records Found.").show();   
+            }
+          }, 
+          error: function (xhr, ajaxOptions, thrownError) { 
+            $("#results").hide();
+            $(".errorAlert").html("Something went wrong. We'll soon fix this for you.").show();
+          }
+        });
+        e.preventDefault();
+      });
+    });
+
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"bc89f8a0048f41f4b560e6b553a9aef0","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
-</html>

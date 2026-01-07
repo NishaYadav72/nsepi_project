@@ -1,0 +1,59 @@
+ body {
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #f97316, #9333ea);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* Floating card */
+    .login-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 40px 30px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        text-align: center;
+    }
+
+    .login-card h2 {
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #1f2937;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 12px;
+    }
+
+    .form-control:focus {
+        border-color: #9333ea;
+        box-shadow: 0 0 8px rgba(147, 51, 234, 0.4);
+    }
+
+    .btn-login {
+        background: #9333ea;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 12px;
+        padding: 10px;
+        transition: 0.3s;
+    }
+
+    .btn-login:hover {
+        background: #7e22ce;
+    }
+
+    .footer-text {
+        margin-top: 20px;
+        font-size: 0.85rem;
+        color: #6b7280;
+    }
+
+    .alert {
+        border-radius: 12px;
+    }

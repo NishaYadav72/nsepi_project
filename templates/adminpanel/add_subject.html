@@ -1,12 +1,25 @@
 {% extends 'adminpanel/base.html' %}
 
 {% block content %}
-<h2>Add Subject</h2>
+<h2>Add Subjects</h2>
 <hr>
 
-<form method="post" class="row g-3">
+
+{% if messages %}
+<div class="mt-3">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form method="post" class="row g-3" id="subjectForm">
     {% csrf_token %}
 
+    <!-- Course Select -->
     <div class="col-md-4">
         <label>Course</label>
         <select name="course" class="form-control" required>
@@ -17,21 +30,21 @@
         </select>
     </div>
 
-    <div class="col-md-4">
-        <label>Subject Name</label>
-        <input type="text" name="subject_name" class="form-control" required>
+    <!-- Dynamic Subject Fields -->
+    <div class="col-md-8">
+        <label>Subjects</label>
+        <div id="subjectFields">
+            <div class="input-group mb-2">
+                <input type="text" name="subjects[]" class="form-control" placeholder="Enter subject name" required>
+                <button class="btn btn-success add-subject-btn" type="button">➕</button>
+            </div>
+        </div>
     </div>
 
-    <div class="col-md-4 d-flex align-items-end">
-        <button class="btn btn-success w-100">Add Subject</button>
+    <div class="col-12">
+        <button class="btn btn-primary">Save Subjects</button>
     </div>
 </form>
-
-<div class="mt-4">
-    <a href="{% url 'add_course' %}" class="btn btn-primary btn-sm">
-        ➕ Add New Course
-    </a>
-</div>
 
 <hr>
 
@@ -53,14 +66,9 @@
             <td>{{ subject.course.name }}</td>
             <td>{{ subject.name }}</td>
             <td>
-<a href="{% url 'edit_subject' subject.id %}" class="btn btn-warning btn-sm">
-    Edit
-</a>
-                <a href="{% url 'delete_subject' subject.id %}"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Delete subject?')">
-                    Delete
-                </a>
+                <a href="{% url 'edit_subject' subject.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'delete_subject' subject.id %}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Delete subject?')">Delete</a>
             </td>
         </tr>
         {% empty %}
@@ -71,4 +79,25 @@
     </tbody>
 </table>
 
+<!-- JS to add multiple subjects -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const subjectFields = document.getElementById('subjectFields');
+
+    subjectFields.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('add-subject-btn')) {
+            // Create new input group
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2';
+            div.innerHTML = `
+                <input type="text" name="subjects[]" class="form-control" placeholder="Enter subject name" required>
+                <button class="btn btn-danger remove-subject-btn" type="button">❌</button>
+            `;
+            subjectFields.appendChild(div);
+        } else if (e.target && e.target.classList.contains('remove-subject-btn')) {
+            e.target.parentElement.remove();
+        }
+    });
+});
+</script>
 {% endblock %}

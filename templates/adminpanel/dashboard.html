@@ -1,35 +1,67 @@
 {% extends 'adminpanel/base.html' %}
 
 {% block content %}
-<h2>Dashboard</h2>
-<hr>
+<h2 class="mb-3">Dashboard</h2>
+<hr class="mb-4">
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
+<div class="row g-4">
+
+    <!-- Total Courses -->
+    <div class="col-md-3">
+        <div class="card text-white shadow-sm" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
+            <div class="card-body text-center">
+                <i class="bi bi-book fs-1 mb-2"></i>
                 <h5>Total Courses</h5>
-                <h2>10</h2>
+                <h2 class="fw-bold">{{ total_courses }}</h2>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
+    <!-- Total Subjects -->
+    <div class="col-md-3">
+        <div class="card text-white shadow-sm" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+            <div class="card-body text-center">
+                <i class="bi bi-journal-bookmark fs-1 mb-2"></i>
                 <h5>Total Subjects</h5>
-                <h2>25</h2>
+                <h2 class="fw-bold">{{ total_subjects }}</h2>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
+    <!-- Total Students -->
+    <div class="col-md-3">
+        <div class="card text-white shadow-sm" style="background: linear-gradient(135deg, #e67e22, #d35400);">
+            <div class="card-body text-center">
+                <i class="bi bi-people fs-1 mb-2"></i>
                 <h5>Total Students</h5>
-                <h2>120</h2>
+                <h2 class="fw-bold">{{ total_students }}</h2>
             </div>
         </div>
     </div>
+
+    <!-- Courses with Subjects -->
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-header text-center bg-dark text-white fw-bold">
+                Courses & Subjects
+            </div>
+            <div class="card-body">
+                {% for course, count in course_subjects %}
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between">
+                            <span>{{ course }}</span>
+                            <span class="fw-bold">{{ count }}</span>
+                        </div>
+                        <div class="progress" style="height: 15px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ count|add:0 }}0%" aria-valuenow="{{ count }}" aria-valuemin="0" aria-valuemax="10"></div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center text-muted">No courses found</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

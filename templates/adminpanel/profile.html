@@ -1,21 +1,63 @@
 {% extends 'adminpanel/base.html' %}
 
 {% block content %}
-<h2>Your Profile</h2>
-<hr>
+<style>
+.profile-glass {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(18px);
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.neon-btn {
+    background: linear-gradient(135deg,#6a11cb,#2575fc);
+    border: none;
+}
+.neon-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(37,117,252,.4);
+}
+</style>
 
-<form method="post">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label>Username</label>
-        <input type="text" class="form-control" value="{{ request.user.username }}" disabled>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+
+            <div class="profile-glass shadow-lg p-5">
+
+                <div class="text-center mb-4">
+                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                         width="85" class="mb-3">
+                    <h3 class="fw-bold text-dark">Admin Security</h3>
+                    <small class="text-muted">Manage your credentials safely</small>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Username</label>
+                        <input type="text"
+                               class="form-control form-control-lg bg-light"
+                               value="{{ request.user.username }}"
+                               disabled>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted">New Password</label>
+                        <input type="password"
+                               name="password"
+                               class="form-control form-control-lg"
+                               placeholder="Create strong password">
+                    </div>
+
+                    <button class="btn neon-btn text-white w-100 py-2 rounded-pill fw-semibold">
+                        Update Password
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label>New Password</label>
-        <input type="password" name="password" class="form-control">
-    </div>
-
-    <button class="btn btn-primary">Update Password</button>
-</form>
+</div>
 {% endblock %}
