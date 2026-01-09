@@ -1,100 +1,130 @@
 {% extends 'adminpanel/base.html' %}
 
 {% block content %}
-<h2>Add Subjects</h2>
-<hr>
+<div class="container mt-4">
+    <h2>Add Subjects</h2>
+    <hr>
 
-
-{% if messages %}
-<div class="mt-3">
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<form method="post" class="row g-3" id="subjectForm">
-    {% csrf_token %}
-
-    <!-- Course Select -->
-    <div class="col-md-4">
-        <label>Course</label>
-        <select name="course" class="form-control" required>
-            <option value="">-- Select Course --</option>
-            {% for course in courses %}
-                <option value="{{ course.id }}">{{ course.name }}</option>
-            {% endfor %}
-        </select>
+    {% if messages %}
+    <div class="mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
     </div>
+    {% endif %}
 
-    <!-- Dynamic Subject Fields -->
-    <div class="col-md-8">
-        <label>Subjects</label>
-        <div id="subjectFields">
-            <div class="input-group mb-2">
-                <input type="text" name="subjects[]" class="form-control" placeholder="Enter subject name" required>
-                <button class="btn btn-success add-subject-btn" type="button">➕</button>
+    <form method="post" class="row g-3" id="subjectForm">
+        {% csrf_token %}
+
+        <!-- Course Select -->
+        <div class="col-md-4">
+            <label for="course">Course</label>
+            <select name="course" id="course" class="form-control" required>
+                <option value="">-- Select Course --</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Theory Subjects -->
+        <div class="col-md-6">
+            <label>Theory Subjects</label>
+            <div id="theoryFields">
+                <div class="input-group mb-2">
+                    <input type="text" name="theory_subjects[]" class="form-control" placeholder="Enter theory subject" required>
+                    <button class="btn btn-success add-theory-btn" type="button">➕</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-12">
-        <button class="btn btn-primary">Save Subjects</button>
-    </div>
-</form>
+        <!-- Practical Subjects -->
+        <div class="col-md-6">
+            <label>Practical Subjects</label>
+            <div id="practicalFields">
+                <div class="input-group mb-2">
+                    <input type="text" name="practical_subjects[]" class="form-control" placeholder="Enter practical subject" required>
+                    <button class="btn btn-success add-practical-btn" type="button">➕</button>
+                </div>
+            </div>
+        </div>
 
-<hr>
+        <div class="col-12 mt-3">
+            <button class="btn btn-primary">Save Subjects</button>
+        </div>
+    </form>
 
-<h4>Subjects List</h4>
+    <hr>
 
-<table class="table table-bordered mt-3">
-    <thead class="table-dark">
-        <tr>
-            <th>#</th>
-            <th>Course</th>
-            <th>Subject</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for subject in subjects %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ subject.course.name }}</td>
-            <td>{{ subject.name }}</td>
-            <td>
-                <a href="{% url 'edit_subject' subject.id %}" class="btn btn-warning btn-sm">Edit</a>
-                <a href="{% url 'delete_subject' subject.id %}" class="btn btn-danger btn-sm"
-                   onclick="return confirm('Delete subject?')">Delete</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4" class="text-center">No subjects added yet</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <h4>Subjects List</h4>
 
-<!-- JS to add multiple subjects -->
+    <table class="table table-bordered mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Course</th>
+                <th>Subject</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ subject.course.name }}</td>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.type|title }}</td>
+                <td>
+                    <a href="{% url 'edit_subject' subject.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_subject' subject.id %}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete subject?')">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No subjects added yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- JS to handle add/remove fields -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const subjectFields = document.getElementById('subjectFields');
+    const theoryFields = document.getElementById('theoryFields');
+    const practicalFields = document.getElementById('practicalFields');
 
-    subjectFields.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('add-subject-btn')) {
-            // Create new input group
+    // Add/remove theory
+    theoryFields.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('add-theory-btn')) {
             const div = document.createElement('div');
             div.className = 'input-group mb-2';
             div.innerHTML = `
-                <input type="text" name="subjects[]" class="form-control" placeholder="Enter subject name" required>
-                <button class="btn btn-danger remove-subject-btn" type="button">❌</button>
+                <input type="text" name="theory_subjects[]" class="form-control" placeholder="Enter theory subject">
+                <button class="btn btn-danger remove-btn" type="button">❌</button>
             `;
-            subjectFields.appendChild(div);
-        } else if (e.target && e.target.classList.contains('remove-subject-btn')) {
+            theoryFields.appendChild(div);
+        } else if (e.target && e.target.classList.contains('remove-btn')) {
+            e.target.parentElement.remove();
+        }
+    });
+
+    // Add/remove practical
+    practicalFields.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('add-practical-btn')) {
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2';
+            div.innerHTML = `
+                <input type="text" name="practical_subjects[]" class="form-control" placeholder="Enter practical subject">
+                <button class="btn btn-danger remove-btn" type="button">❌</button>
+            `;
+            practicalFields.appendChild(div);
+        } else if (e.target && e.target.classList.contains('remove-btn')) {
             e.target.parentElement.remove();
         }
     });

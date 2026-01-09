@@ -4,7 +4,8 @@
 <h2 class="mb-3">Dashboard</h2>
 <hr class="mb-4">
 
-<div class="row g-4">
+<!-- ===== TOP STATS CARDS ===== -->
+<div class="row g-4 mb-4">
 
     <!-- Total Courses -->
     <div class="col-md-3">
@@ -41,7 +42,7 @@
 
     <!-- Courses with Subjects -->
     <div class="col-md-3">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm h-100">
             <div class="card-header text-center bg-dark text-white fw-bold">
                 Courses & Subjects
             </div>
@@ -52,8 +53,8 @@
                             <span>{{ course }}</span>
                             <span class="fw-bold">{{ count }}</span>
                         </div>
-                        <div class="progress" style="height: 15px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ count|add:0 }}0%" aria-valuenow="{{ count }}" aria-valuemin="0" aria-valuemax="10"></div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-success" style="width: {{ count }}0%"></div>
                         </div>
                     </div>
                 {% empty %}
@@ -64,4 +65,111 @@
     </div>
 
 </div>
+
+<!-- ===== VERTICAL PROGRESS CHART ===== -->
+<!-- ===== MODERN METER CHART ===== -->
+<div class="card shadow-sm mt-4">
+    <div class="card-body">
+        <h5 class="fw-bold text-center mb-4">System Overview</h5>
+
+        <div class="meter-chart">
+
+            <!-- Students -->
+            <div class="meter">
+                <div class="meter-track">
+                    <div class="meter-fill students-fill" style="height: {{ students_percent }}%"></div>
+                </div>
+                <div class="meter-value">{{ total_students }}</div>
+                <div class="meter-label">Students</div>
+            </div>
+
+            <!-- Courses -->
+            <div class="meter">
+                <div class="meter-track">
+                    <div class="meter-fill courses-fill" style="height: {{ courses_percent }}%"></div>
+                </div>
+                <div class="meter-value">{{ total_courses }}</div>
+                <div class="meter-label">Courses</div>
+            </div>
+
+            <!-- Subjects -->
+            <div class="meter">
+                <div class="meter-track">
+                    <div class="meter-fill subjects-fill" style="height: {{ subjects_percent }}%"></div>
+                </div>
+                <div class="meter-value">{{ total_subjects }}</div>
+                <div class="meter-label">Subjects</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== CHART CSS ===== -->
+<style>
+.meter-chart{
+    display:flex;
+    justify-content:space-around;
+    align-items:flex-end;
+    height:280px;
+}
+
+.meter{
+    width:80px;
+    text-align:center;
+}
+
+.meter-track{
+    height:190px;
+    width:14px;
+    background:#dee2e6;
+    border-radius:20px;
+    margin:auto;
+    position:relative;
+    overflow:hidden;
+}
+
+.meter-fill{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    border-radius:20px;
+    animation: grow 1s ease;
+}
+
+/* Colors */
+.students-fill{
+    background:linear-gradient(180deg,#ff9f43,#ee5253);
+    box-shadow:0 0 10px rgba(255,159,67,.7);
+}
+
+.courses-fill{
+    background:linear-gradient(180deg,#1dd1a1,#10ac84);
+    box-shadow:0 0 10px rgba(29,209,161,.7);
+}
+
+.subjects-fill{
+    background:linear-gradient(180deg,#54a0ff,#2e86de);
+    box-shadow:0 0 10px rgba(84,160,255,.7);
+}
+
+.meter-value{
+    font-weight:700;
+    margin-top:10px;
+    font-size:15px;
+}
+
+.meter-label{
+    font-size:14px;
+    color:#555;
+}
+
+@keyframes grow{
+    from{height:0;}
+}
+</style>
+
+
+
 {% endblock %}

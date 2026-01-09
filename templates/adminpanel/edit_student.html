@@ -1,60 +1,125 @@
 {% extends 'adminpanel/base.html' %}
 
 {% block content %}
-<h2>Edit Student: {{ student.name }}</h2>
-<hr>
-
-<form method="post" enctype="multipart/form-data" class="row g-3">
-    {% csrf_token %}
-
-    <div class="col-md-4">
-        <label>Student Name</label>
-        <input type="text" name="name" class="form-control" value="{{ student.name }}" required>
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-primary text-white fw-bold">
+        ✏️ Edit Student: {{ student.name }}
     </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="row g-3">
+            {% csrf_token %}
 
-    <div class="col-md-4">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control" value="{{ student.email }}" required>
-    </div>
+            <!-- Student Info -->
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Student Name</label>
+                <input type="text" name="name" class="form-control" value="{{ student.name }}" required>
+            </div>
 
-    <div class="col-md-4">
-        <label>Phone</label>
-        <input type="text" name="phone" class="form-control" value="{{ student.phone }}" required>
-    </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Email</label>
+                <input type="email" name="email" class="form-control" value="{{ student.email }}" required>
+            </div>
 
-    <div class="col-md-4">
-        <label>Father Name</label>
-        <input type="text" name="father_name" class="form-control" value="{{ student.father_name }}" required>
-    </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Phone</label>
+                <input type="text" name="phone" class="form-control" value="{{ student.phone }}" required>
+            </div>
 
-    <div class="col-md-8">
-        <label>Address</label>
-        <textarea name="address" class="form-control" rows="2">{{ student.address }}</textarea>
-    </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Father Name</label>
+                <input type="text" name="father_name" class="form-control" value="{{ student.father_name }}" required>
+            </div>
 
-    <div class="col-md-4">
-        <label>10th Marksheet</label>
-        <input type="file" name="tenth_marksheet" class="form-control">
-    </div>
+            <div class="col-md-8">
+                <label class="form-label fw-semibold">Address</label>
+                <textarea name="address" class="form-control" rows="2">{{ student.address }}</textarea>
+            </div>
 
-    <div class="col-md-4">
-        <label>12th Marksheet</label>
-        <input type="file" name="twelfth_marksheet" class="form-control">
-    </div>
+            <!-- Course Selection -->
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Course</label>
+                <select name="course" id="courseSelect" class="form-control" required>
+                    <option value="">-- Select Course --</option>
+                    {% for course in courses %}
+                        <option value="{{ course.id }}" 
+                                data-duration="{{ course.duration }}" 
+                                data-code="{{ course.code }}"
+                                {% if student.course and student.course.id == course.id %}selected{% endif %}>
+                            {{ course.name }} ({{ course.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <div class="col-md-4">
-        <label>Aadhaar Card</label>
-        <input type="file" name="aadhaar_card" class="form-control">
-    </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Course Code</label>
+                <input type="text" name="course_code" id="courseCode" class="form-control" value="{{ student.course_code }}" readonly>
+            </div>
 
-    <div class="col-md-4">
-        <label>Photo</label>
-        <input type="file" name="photo" class="form-control">
-    </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Duration</label>
+                <input type="text" name="duration" id="courseDuration" class="form-control" value="{{ student.duration }}" readonly>
+            </div>
 
-    <div class="col-md-12">
-        <button class="btn btn-primary">💾 Update Student</button>
-        <a href="{% url 'add_student' %}" class="btn btn-secondary">Cancel</a>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Course Session</label>
+                <input type="text" name="course_session" class="form-control" value="{{ student.session }}" placeholder="2024-2025">
+            </div>
+
+            <!-- Documents -->
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">10th Marksheet</label>
+                {% if student.tenth_marksheet %}
+                    <p><a href="{{ student.tenth_marksheet.url }}" target="_blank">View Current</a></p>
+                {% endif %}
+                <input type="file" name="tenth_marksheet" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">12th Marksheet</label>
+                {% if student.twelfth_marksheet %}
+                    <p><a href="{{ student.twelfth_marksheet.url }}" target="_blank">View Current</a></p>
+                {% endif %}
+                <input type="file" name="twelfth_marksheet" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Aadhaar Card</label>
+                {% if student.aadhaar_card %}
+                    <p><a href="{{ student.aadhaar_card.url }}" target="_blank">View Current</a></p>
+                {% endif %}
+                <input type="file" name="aadhaar_card" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Photo</label>
+                {% if student.photo %}
+                    <p><img src="{{ student.photo.url }}" width="60" height="60" class="rounded shadow-sm"></p>
+                {% endif %}
+                <input type="file" name="photo" class="form-control">
+            </div>
+
+            <!-- Actions -->
+            <div class="col-12 mt-3 d-flex gap-2">
+                <button class="btn btn-success btn-lg flex-fill">💾 Update Student</button>
+                <a href="{% url 'add_student' %}" class="btn btn-secondary btn-lg flex-fill">Cancel</a>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
+<!-- JS for auto-filling Course Code & Duration -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const courseSelect = document.getElementById('courseSelect');
+    const courseCodeInput = document.getElementById('courseCode');
+    const courseDurationInput = document.getElementById('courseDuration');
+
+    courseSelect.addEventListener('change', function() {
+        const selected = this.options[this.selectedIndex];
+        courseCodeInput.value = selected.dataset.code || '';
+        courseDurationInput.value = selected.dataset.duration || '';
+    });
+});
+</script>
 {% endblock %}

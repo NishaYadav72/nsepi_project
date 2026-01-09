@@ -1,13 +1,19 @@
 from django.urls import path
 from . import views
+from .views import download_receipt
+from .views import api_verify_admission
+
+
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('courses/', views.courses, name='courses'),
 
+path('student/register/', views.student_register, name='student_register'),
     path('student/login/', views.student_login, name='student_login'),
-    path('student/admission-verification/', views.admission_verification, name='admission_verification'),
+    path('student/logout/', views.student_logout, name='student_logout'),
+            path('student/admission-verification/', views.admission_verification, name='admission_verification'),
     path('student/admit-card/', views.admit_card, name='admit_card'),
     path('student/verify-certificate/', views.verify_certificate, name='verify_certificate'),
     path('student/result/', views.student_result, name='student_result'),
@@ -88,11 +94,24 @@ path('edit-course/<int:id>/', views.edit_course, name='edit_course'),
 path('add-subject/', views.add_subject, name='add_subject'),
 path('delete-subject/<int:id>/', views.delete_subject, name='delete_subject'),
 path('edit-subject/<int:id>/', views.edit_subject, name='edit_subject'),
+    path('add-center/', views.add_center, name='add_center'),
+path("edit-center/<int:id>/", views.edit_center, name="edit_center"),
+    path("delete-center/<int:id>/", views.delete_center, name="delete_center"),
+    path('center/activate/<int:id>/', views.activate_center, name='activate_center'),
 
 path('add-student/', views.add_student, name='add_student'),
 path('edit-student/<int:id>/', views.edit_student, name='edit_student'),
 path('delete-student/<int:id>/', views.delete_student, name='delete_student'),
+path('download-receipt/<int:student_id>/', views.download_admission_receipt, name='download_admission_receipt'),
+path('marksheet/add/', views.add_marksheet, name='add_marksheet'),
+path('marksheet/edit/<int:pk>/', views.edit_marksheet, name='marksheet_edit'),
+path('marksheet/delete/<int:pk>/', views.delete_marksheet, name='marksheet_delete'),
 
 path('logout/', views.admin_logout, name='logout'),
+
+
+
+path('student/download-receipt/', download_receipt, name='download_receipt'),
+path('api/verify-admission/', api_verify_admission, name='api_verify_admission'),
 
 ]

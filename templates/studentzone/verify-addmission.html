@@ -3,7 +3,7 @@
   {% load static %}
         <link href="https:/cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
         <link rel="stylesheet" href="https:/cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">    
-        <link rel="stylesheet" href="styles/global.css" />
+        <link rel="stylesheet" href="{% static 'css/global.css' %}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="assets/favicon.ico">
         <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -42,18 +42,18 @@
 
 <div class="d-none d-lg-block">
   <div class="container py-2 d-flex">
-    <a class="navbar-brand" href="index.html"><img src="assets/logo-nsdpi.png" width="230" height="80"/></a>
+    <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo-nsdpi.png'%}" width="230" height="80"/></a>
     <div class="d-flex ms-auto">
-      <img class="navbar-logos" src="assets/images/logos/akam.png" alt="Azadi Ka Amrit Mahotsav" />
-      <img class="navbar-logos" src="assets/images/logos/g20.png" alt="G20 India" />            
-      <img class="navbar-logos" src="assets/images/logos/skill-india2.png" alt="Sill India" />
+      <img class="navbar-logos" src="{% static 'images/logos/akam.png'%}" alt="Azadi Ka Amrit Mahotsav" />
+      <img class="navbar-logos" src="{% static 'images/logos/g20.png'%}" alt="G20 India" />            
+      <img class="navbar-logos" src="{% static 'images/logos/skill-india2.png'%}" alt="Sill India" />
     </div>
   </div>
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-light navbar-nsdpi">
   <div class="container">
-    <a class="navbar-brand d-lg-none" href="index.html"><img src="assets/logo-nsdpi.png" width="230" height="80"/></a>
+    <a class="navbar-brand d-lg-none" href="{% url 'home' %}"><img src="{% static 'images/logo-nsdpi.png' %}" width="230" height="80"/></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -72,7 +72,7 @@
           <a class="nav-link student-zone" href="#">Student Zone</a>
           <ul class="nav-sub-menu">
             <li>
-              <a class="nav-link student-zone" href="{% url 'student-login' %}">Student Login</a>
+              <a class="nav-link student-zone" href="{% url 'student_login' %}">Student Login</a>
             </li>
             <li>
               <a class="nav-link student-zone" href="{% url 'admission_verification' %}">Admission Verification</a>
@@ -89,13 +89,13 @@
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link placements" href="{% url 'placemets'%}">Placements</a>
+          <a class="nav-link placements" href="{% url 'placements'%}">Placements</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link branches" href="branches.html">Branches</a>
+          <a class="nav-link branches" href="{% url 'branches' %}">Branches</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link contact" href="contact.html">Contact Us</a>
+          <a class="nav-link contact" href="{% url 'contact' %}">Contact Us</a>
         </li>
         <li class="nav-item branch-apply-nav-item">
           <a class="nav-link contact" href="{% url 'branch_application' %}">Apply for Branch</a>
@@ -110,15 +110,15 @@
               <h1 class="gradient">Admission Verification</h1>
               <p class="fs-6 mb-4">This platform allows you to Verify student's admission.</p>
           </div>
-          <form method="post" class="text-center border p-3 col-md-6 mx-auto">
-            <label for="cnumber" class="mb-2 fw-semibold">Enter Enrollment Id</label>
-            <input type="text" class="form-control" id="enrollmentId"/>
-            <button  type="submit" class="btn btn-primary mt-2" id="verify-cert">Search</button>
+          <form id="admissionForm" class="text-center border p-3 col-md-6 mx-auto">
+    {% csrf_token %}
+    <label for="enrollment_no" class="mb-2 fw-semibold">Enter Enrollment Id</label>
+    <input type="text" class="form-control" id="enrollment_no" name="enrollment_no"/>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
 </form>
 
-          <div class="result col-lg-8 mx-auto p-3 my-4">
-              No Result Found.
-          </div>
+<div class="result col-lg-8 mx-auto p-3 my-4" style="display:none;"></div>
+
 
 
       </div>
@@ -179,7 +179,7 @@
                 <div class="py-3 d-flex flex-column">
                     <a href="app/student-login.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Student Login</a>
                     <a href="app/center-login.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Branch Login</a>
-                    <a href="{% url 'bbranch_application' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Apply for a
+                    <a href="{% url 'branch_application' %}" class="py-1"><i class="bi bi-caret-right-fill"></i> Apply for a
                         Branch</a>
                     <a href="branches.html" class="py-1"><i class="bi bi-caret-right-fill"></i> Our Branches</a>
                     <a href="#" class="py-1"><i class="bi bi-caret-right-fill"></i> Download</a>
@@ -246,116 +246,64 @@
 
 
   
-        <script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="../cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="../cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-        <script src="../code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-        <script src="js/main.js"></script>
-          <script>
-    $(document).ready(function() {
-      $("#verify-cert").click(function(e){
-        const enrollmentId = $("#enrollmentId").val();
-        if(!enrollmentId?.trim()) return;
-        const formData = new FormData()
-        formData.append("enrollmentId", enrollmentId);
-        $(".result").hide();
-        $.ajax({
-          type: 'POST',
-          url: "api/verify-admission",
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function (data, textStatus, xhr) {
-            data = JSON.parse(data);
-            console.log(data);
-            if(data && data?.length) {
-                let resStr = "<h3>Admission Details</h3>";
-                data.forEach(function(student) {
-                  resStr += renderStudentDetails(student);
-                });  
-                $(".result").html(resStr).show();
-            } else {
-              $(".result").html("No Records Found.").show();   
-            }
-          }, 
-          error: function (xhr, ajaxOptions, thrownError) { 
-            $(".result").html("Something went wrong. We'll soon fix this for you.").show();
-          }
-        });
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#admissionForm").on("submit", function(e) {
         e.preventDefault();
-      });
+        const enrollment_no = $("#enrollment_no").val().trim();
+        if(!enrollment_no) return alert("Please enter Enrollment No.");
+
+        const formData = new FormData(this);
+
+        $(".result").hide();
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'api_verify_admission' %}",
+            headers: {"X-CSRFToken": $('[name=csrfmiddlewaretoken]').val()},
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if(data && data.length) {
+                    let student = data[0];
+                    let html = `
+                        <div class="flex-grow-1">
+                            <h4 class="text-primary">${student.studentName}</h4>
+                            <p><b>Father's Name:</b> ${student.fathersName}</p>
+                            <p><b>Enrollment No:</b> ${student.enrollment_no}</p>
+                            <p><b>Roll No:</b> ${student.rollNumber}</p>
+                            <p><b>Course Name:</b> ${student.courseName}</p>
+                            <p><b>Course Code:</b> ${student.courseCode}</p>
+                            <p><b>Course Duration:</b> ${student.courseDuration}</p>
+                            <p><b>Session:</b> ${student.session}</p>
+                            <p><b>Center Name:</b> ${student.centerName}</p>
+                            <p><b>Center Code:</b> ${student.centerCode}</p>
+                            <p><b>Center Address:</b> ${student.centerAddress}</p>
+                            <p><b>Admission Date:</b> ${student.admissionDate}</p>
+                        </div>
+
+                            <div class="text-center mt-3">
+                                ${ student.receiptUrl 
+                                    ? `<a href="${student.receiptUrl}" class="btn btn-success" target="_blank">📥 Download PDF</a>` 
+                                    : `<span class="btn btn-warning">Receipt not available</span>` 
+                                }
+                            </div>
+                        </div>
+                    `;
+                    $(".result").html(html).show();
+                } else {
+                    $(".result").html("<p class='text-danger text-center'>No Record Found.</p>").show();
+                }
+            },
+            error: function() {
+                $(".result").html("<p class='text-danger text-center'>Something went wrong.</p>").show();
+            }
+        });
     });
+});
+</script>
 
-    function renderStudentDetails(student) {
-      return `
-      <div class="flex-grow-1 text-start">
-        <img src="/files/students/${student.photoPath}" class="photo rounded border d-block mx-auto my-4" width="120"/>
-        <div class="px-lg-5 py-2 text-primary">
-            <div class="border bg-light px-3 py-2">
-              <div class="r-row">
-                <div class="label">Enrollment Number</div>
-                <div class="value fw-bold">${ student.enrollmentId }</div>
-              </div>
-              <div class="r-row">
-                <div class="label">Roll Number</div>
-                <div class="value fw-bold">${ student.rollNumber }</div>
-              </div>
-              <div class="r-row">
-                <div class="label">Admission Date</div>
-                <div class="value fw-bold">${getFormattedDate(student.admissionDate)}</div>
-              </div>
-            </div>
-        </div>
-        <div class="px-lg-5 py-2">
-          <div class="border bg-light px-3 py-2">
-            <h6 class="text-success">Student's Information</h6>
-            <div class="r-row">
-              <div class="label">Student's Name</div>
-              <div class="value">${ student.studentName }</div>
-            </div>
-            <div class="r-row">
-              <div class="label">Father's Name</div>
-              <div class="value">${ student.fathersName }</div>
-            </div>
-          </div>
-        </div>
 
-        <div class="px-lg-5 py-2">
-          <div class="border bg-light px-3 py-2">
-            <h6 class="text-success">Course Information</h6>
-            <div class="r-row">
-              <div class="label">Course Name</div>
-              <div class="value">${ student.courseName }</div>
-            </div>
-            <div class="r-row">
-              <div class="label">Course Code</div>
-              <div class="value">${ student.courseCode }</div>
-            </div>
-            <div class="r-row">
-              <div class="label">Course Duration</div>
-              <div class="value">${ getDurationLabel(student.courseDuration) }</div>
-            </div>
-            <div class="r-row">
-              <div class="label">Course Session</div>
-              <div class="value">${ student.session }</div>
-            </div>
-          </div>
-        </div>
-        <div class="px-lg-5 py-2">
-          <div class="border bg-light px-3 py-2">
-            <h6 class="text-success">Training Center Information</h6>
-            <div class="r-row">
-              <div class="label">Center Name</div>
-              <div class="value">${ student.centerName }</div>
-            </div>
-            <div class="r-row">
-              <div class="label">Center Code</div>
-              <div class="value">${ student.branchCode }</div>
-            </div>
-          </div>
-        </div>
-        </div>`;
-    }
-
-  </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"bc89f8a0048f41f4b560e6b553a9aef0","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>

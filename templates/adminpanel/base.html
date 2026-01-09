@@ -162,8 +162,16 @@
     <a href="{% url 'admin_profile' %}" class="{% if request.resolver_match.url_name == 'admin_profile' %}active{% endif %}"><i class="bi bi-person"></i>Your Profile</a>
     <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"><i class="bi bi-bar-chart"></i>Dashboard</a>
     <a href="{% url 'add_course' %}" class="{% if request.resolver_match.url_name == 'add_course' %}active{% endif %}"><i class="bi bi-book"></i>Add Course</a>
+    <a href="{% url 'add_center' %}" class="{% if request.resolver_match.url_name == 'add_center' %}active{% endif %}">
+    <i class="bi bi-building"></i> Add Center Details
+</a>
+
     <a href="{% url 'add_subject' %}" class="{% if request.resolver_match.url_name == 'add_subject' %}active{% endif %}"><i class="bi bi-journal-bookmark"></i>Add Subject</a>
     <a href="{% url 'add_student' %}" class="{% if request.resolver_match.url_name == 'add_student' %}active{% endif %}"><i class="bi bi-mortarboard"></i>Add Student Details</a>
+    <a href="{% url 'add_marksheet' %}" class="{% if request.resolver_match.url_name == 'add_marksheet' %}active{% endif %}"><i class="bi bi-file-earmark-text"></i>Add Marksheet</a>
+
+
+
     <a href="{% url 'logout' %}" class="text-danger"><i class="bi bi-box-arrow-right"></i>Logout</a>
 </div>
 

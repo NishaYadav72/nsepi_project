@@ -1,0 +1,80 @@
+{% extends "adminpanel/base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Add Center Details</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="col-md-6 mx-auto border p-4 bg-light rounded shadow-sm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-2">Save Center</button>
+    </form>
+
+    <div class="mt-4">
+        <h5>Existing Centers</h5>
+        <table class="table table-bordered table-striped mt-2">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Center Name</th>
+                    <th>Code</th>
+                    <th>Address</th>
+                    <th>Status</th>
+
+                   <th>Action</th>
+ 
+                </tr>
+            </thead>
+            <tbody>
+{% for center in centers %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ center.name }}</td>
+        <td>{{ center.code }}</td>
+        <td>{{ center.address }}</td>
+
+        <td class="text-center">
+    {% if center.is_active %}
+        <span class="badge bg-success">Active</span>
+    {% else %}
+        <span class="badge bg-secondary">Inactive</span>
+    {% endif %}
+</td>
+
+<td class="text-center">
+    <a href="{% url 'edit_center' center.id %}" class="btn btn-sm btn-warning">
+        <i class="bi bi-pencil"></i>
+    </a>
+
+    {% if not center.is_active %}
+        <a href="{% url 'activate_center' center.id %}" class="btn btn-sm btn-success">
+            Activate
+        </a>
+    {% endif %}
+
+    <a href="{% url 'delete_center' center.id %}"
+       class="btn btn-sm btn-danger"
+       onclick="return confirm('Are you sure?');">
+        <i class="bi bi-trash"></i>
+    </a>
+</td>
+
+        
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="5" class="text-center">No centers added yet.</td>
+    </tr>
+{% endfor %}
+</tbody>
+
+        </table>
+    </div>
+</div>
+{% endblock %}

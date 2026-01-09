@@ -1,0 +1,78 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Marksheet - {{ marksheet.student.name }}</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Student Info -->
+        <div class="border p-3 rounded mb-3">
+            <div class="row mb-2">
+                <div class="col-md-3"><strong>Name:</strong> {{ marksheet.student.name }}</div>
+                <div class="col-md-3"><strong>Father:</strong> {{ marksheet.student.father_name }}</div>
+                <div class="col-md-3"><strong>Roll No:</strong> {{ marksheet.student.roll_no }}</div>
+                <div class="col-md-3"><strong>Course:</strong> {{ marksheet.student.course.name }}</div>
+            </div>
+        </div>
+
+        <!-- Marks Table -->
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Theory</h5>
+                <table class="table table-bordered">
+                    <thead><tr><th>Subject</th><th>Marks</th></tr></thead>
+                    <tbody>
+                        {% for subject, obtained in marksheet.marks.theory.items %}
+                        <tr>
+                            <td>{{ subject }}</td>
+                            <td>
+                                <input type="number" name="marks[{{ subject }}]" class="form-control" value="{{ obtained }}" required>
+                                <input type="hidden" name="type[{{ subject }}]" value="theory">
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2" class="text-center">No theory marks</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h5>Practical</h5>
+                <table class="table table-bordered">
+                    <thead><tr><th>Subject</th><th>Marks</th></tr></thead>
+                    <tbody>
+                        {% for subject, obtained in marksheet.marks.practical.items %}
+                        <tr>
+                            <td>{{ subject }}</td>
+                            <td>
+                                <input type="number" name="marks[{{ subject }}]" class="form-control" value="{{ obtained }}" required>
+                                <input type="hidden" name="type[{{ subject }}]" value="practical">
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2" class="text-center">No practical marks</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        
+
+        <button type="submit" class="btn btn-primary mt-3">Update Marksheet</button>
+        <a href="{% url 'add_marksheet' %}" class="btn btn-secondary mt-3">Cancel</a>
+    </form>
+</div>
+{% endblock %}

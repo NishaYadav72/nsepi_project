@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Admission Receipt</title>
+
+<style>
+
+@page {
+    size: A4;
+    margin: 15mm;
+}
+body{
+    font-family: DejaVu Sans;
+    font-size:12px;
+}
+
+.receipt{
+    width:100%;
+    border:1px solid #000;
+    padding:10px;
+    box-sizing: border-box;
+    table-layout: fixed;
+
+
+}
+
+td{
+    word-wrap: break-word;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.header td{
+    vertical-align:middle;
+    text-align:center;
+}
+
+.header img{
+    height:70px;
+}
+
+.title{
+    background:#3f7f2f;
+    color:#fff;
+    text-align:center;
+    font-size:18px;
+    padding:6px;
+    margin:10px 0;
+}
+
+.box{
+    border:1px solid #000;
+    padding:6px;
+    margin-top:8px;
+}
+
+.box-title{
+    font-weight:bold;
+    margin-bottom:4px;
+    color: #3f7f2f;
+    font-size: 20px;
+}
+
+.label{
+    font-weight:bold;
+    width:160px;
+}
+
+.fees td{
+    border:1px solid #000;
+    text-align:center;
+    font-weight:bold;
+    padding:8px;
+}
+
+.footer td{
+    vertical-align:bottom;
+}
+
+
+.box table td {
+    border: none;  /* Remove inner borders */
+}
+
+
+.box table, .box table tr, .box table td {
+    border: none !important;  /* koi bhi horizontal ya vertical line na aaye */
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="receipt">
+
+<table class="header">
+<tr>
+<td width="15%"><img src="{{ left_logo_url }}"></td>
+<td width="70%" style="text-align:center;">
+    <div class="pdf-header">
+        <div>भारतीय राष्ट्रीय कौशल विकास योजना</div>
+        <div style="font-size: 20px;">National Skill Empowerment Program of India</div>
+        <div>A BEST SKILL ACADEMY IN INDIA, RUN BY MPASS FOUNDATION</div>
+        <div>Regd by Govt of Delhi Regd. No. U80902DL2022NPL398502</div>
+        <div>Regd. Under NITI Aayog Unique ID:DL/2022/0320041 Govt of India</div>
+        <div>Incorporated Under Section 8, Ministry of Corporate Affairs, Govt of India</div>
+        <div style="color: purple; font-size: 18px;">(AN ISO 9001:2015 Certified Organization)</div>
+    </div>
+</td>
+
+<style>
+.pdf-header div {
+    margin: 0;
+    padding: 0;
+    line-height: 1;  /* gap bilkul kam kare */
+    font-weight: bold; /* optional */
+}
+</style>
+
+
+
+<td width="15%"><img src="{{ right_logo_url }}"></td>
+</tr>
+</table>
+
+<div class="title">ADMISSION RECEIPT</div>
+
+<div class="box">
+<table>
+<tr>
+<td>
+    <span style="color: blue; font-weight: bold;">
+        Enrollment No: {{ student.enrollment_no }}
+    </span><br>
+    <span style="color: blue; font-weight: bold;">
+        Roll No: {{ student.roll_no }}
+    </span>
+</td>
+<td align="right">
+    <span style="color: blue; font-weight: bold;">
+        Date: {{ student.created_at|date:"d-m-Y" }}
+    </span>
+</td>
+</tr>
+</table>
+</div>
+
+
+<!-- Student Information Box -->
+<div class="box" style="border:1px solid #000; padding:8px; margin-top:8px;">
+    <div style="line-height:1.2;">
+        <b style="color: green; font-size: 20px;">Student Information</b> <br> <br>
+
+        <b>Student Name:</b> {{ student.name }}<br>
+        <b>Father Name:</b> {{ student.father_name }}<br>
+        <b>Address:</b> {{ student.address }}
+    </div>
+</div>
+
+<!-- Course Information Box -->
+<div class="box" style="border:1px solid #000; padding:8px; margin-top:8px;">
+    <div style="line-height:1.2;">
+            <b style="color: green; font-size: 20px;">Course Information</b> <br> <br>
+
+        <b>Course Name:</b> {{ student.course.name }}<br>
+        <b>Course Code:</b> {{ student.course_code }}<br>
+        <b>Course Duration:</b> {{ student.duration }}
+    </div>
+</div>
+
+<!-- Center Information Box -->
+<div class="box" style="border:1px solid #000; padding:8px; margin-top:8px;">
+    <div style="line-height:1.2;">
+                    <b style="color: green; font-size: 20px;">Center Information</b> <br> <br>
+
+        <b>Center Name:</b> {{ center.name }}<br>
+        <b>Center Code:</b> {{ center.code }}<br>
+        <b>Center Address:</b> {{ center.address }}
+    </div>
+</div>
+
+<!-- Course Fees Box -->
+<div class="box" style="border:1px solid #000; padding:8px; margin-top:8px;">
+    <div style="line-height:1.2;">
+                    <b style="color: green; font-size: 20px;">Fee Information</b> <br> <br>
+
+        <b>Course Fee:</b> ₹{{ fees.course }}<br>
+        <b>Registration:</b> ₹{{ fees.registration }}<br>
+        <b>Exam Fee:</b> ₹{{ fees.exam }}<br>
+        <b>Paid:</b> ₹{{ fees.paid }}
+    </div>
+</div>
+
+<table class="footer" style="margin-top:20px;">
+<tr>
+<td><img src="{{ qr_code_url }}" width="90"></td>
+<td align="right" style="height:80px;">Authorized Signature</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

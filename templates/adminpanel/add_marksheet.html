@@ -1,0 +1,274 @@
+{% extends 'adminpanel/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Marksheet</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- Select Student -->
+        <select id="roll_no" name="roll_no" class="form-select mb-3" required>
+            <option value="">-- Select Roll Number --</option>
+            {% for student in students %}
+                {% if student.roll_no %}
+                    <option value="{{ student.id }}">{{ student.roll_no }} - {{ student.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+
+        <!-- Student Info -->
+        <div id="student-info" class="border p-3 rounded mb-3" style="display: none;">
+            <div class="row mb-2">
+                <div class="col-md-3"><strong>Name:</strong> <span id="student-name"></span></div>
+                <div class="col-md-3"><strong>Father:</strong> <span id="student-father"></span></div>
+                <div class="col-md-3"><strong>Enrollment:</strong> <span id="student-enroll"></span></div>
+                <div class="col-md-3"><strong>Course:</strong> <span id="student-course"></span></div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3"><strong>Course Code:</strong> <span id="student-course-code"></span></div>
+                <div class="col-md-3"><strong>Duration:</strong> <span id="student-duration"></span></div>
+                <div class="col-md-3"><strong>Session:</strong> <span id="student-session"></span></div>
+                <div class="col-md-3">
+                    <img id="student-photo" src="{% static 'default_photo.png' %}" style="width:80px;height:80px;border:1px solid #ccc;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Marks Table -->
+        <div id="marks-table" style="display:none;">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Theory</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Full Marks</th>
+                                <th>Pass Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="theory-body"></tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h5>Practical</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Full Marks</th>
+                                <th>Pass Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="practical-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Save Marksheet</button>
+    </form>
+
+    <hr>
+    <h4>Saved Marksheets</h4>
+    {% for item in marksheets_with_totals %}
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ item.marksheet.student.name }} ({{ item.marksheet.student.roll_no }})</strong>
+                - Uploaded at: {{ item.marksheet.uploaded_at|date:"d M Y H:i" }}
+                {% if item.marksheet.file %}
+                    - <a href="{{ item.marksheet.file.url }}" target="_blank">Download File</a>
+                {% endif %}
+            </div>
+            <div>
+                <a href="{% url 'marksheet_edit' item.marksheet.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <form action="{% url 'marksheet_delete' item.marksheet.id %}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this marksheet?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+
+                
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <!-- Theory -->
+                <div class="col-md-6">
+                    <h5>Theory Marks</h5>
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Full Marks</th>
+                                <th>Pass Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subject, data in item.marksheet.marks.theory.items %}
+                            <tr>
+                                <td>{{ subject }}</td>
+                                <td>{{ data.full }}</td>
+                                <td>{{ data.pass }}</td>
+                                <td>{{ data.obtained }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center">No theory marks</td></tr>
+                            {% endfor %}
+                            {% if item.marksheet.marks.theory %}
+                            <tr class="table-info">
+                                <th>Total</th>
+                                <th>{{ item.theory_total.full }}</th>
+                                <th>{{ item.theory_total.pass }}</th>
+                                <th>{{ item.theory_total.obtained }}</th>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Practical -->
+                <div class="col-md-6">
+                    <h5>Practical Marks</h5>
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Full Marks</th>
+                                <th>Pass Marks</th>
+                                <th>Obtained Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subject, data in item.marksheet.marks.practical.items %}
+                            <tr>
+                                <td>{{ subject }}</td>
+                                <td>{{ data.full }}</td>
+                                <td>{{ data.pass }}</td>
+                                <td>{{ data.obtained }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center">No practical marks</td></tr>
+                            {% endfor %}
+                            {% if item.marksheet.marks.practical %}
+                            <tr class="table-info">
+                                <th>Total</th>
+                                <th>{{ item.practical_total.full }}</th>
+                                <th>{{ item.practical_total.pass }}</th>
+                                <th>{{ item.practical_total.obtained }}</th>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+             <!-- Grand Total, Percentage, Division -->
+        <div class="mt-3">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="p-2 border rounded bg-light">
+                <strong>Grand Total:</strong> {{ item.grand_total }} / {{ item.grand_full }}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-2 border rounded bg-light">
+                <strong>Percentage:</strong> {{ item.percentage }}%
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-2 border rounded bg-light">
+                <strong>Division:</strong> {{ item.division }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center">No marksheets saved yet.</p>
+    {% endfor %}
+</div>
+
+<script>
+const studentsData = {
+    {% for student in students %}
+    "{{ student.id }}": {
+        "name": "{{ student.name }}",
+        "father": "{{ student.father_name }}",
+        "enroll": "{{ student.enrollment_no }}",
+        "course": "{{ student.course.name|default:'' }}",
+        "course_code": "{{ student.course_code|default:'' }}",
+        "duration": "{{ student.duration|default:'' }}",
+        "session": "{{ student.session|default:'' }}",
+        "photo": "{% if student.photo %}{{ student.photo.url }}{% else %}{% static 'default_photo.png' %}{% endif %}",
+        "subjects": [
+            {% for subject in student.course.subject_set.all %}
+            {"name": "{{ subject.name }}", "type": "{{ subject.type }}"},
+            {% endfor %}
+        ]
+    },
+    {% endfor %}
+};
+
+const rollSelect = document.getElementById('roll_no');
+const studentInfoDiv = document.getElementById('student-info');
+const marksTableDiv = document.getElementById('marks-table');
+
+rollSelect.addEventListener('change', function() {
+    const studentId = this.value;
+    if (!studentId) {
+        studentInfoDiv.style.display = 'none';
+        marksTableDiv.style.display = 'none';
+        return;
+    }
+
+    const student = studentsData[studentId];
+    document.getElementById('student-name').innerText = student.name;
+    document.getElementById('student-father').innerText = student.father;
+    document.getElementById('student-enroll').innerText = student.enroll;
+    document.getElementById('student-course').innerText = student.course;
+    document.getElementById('student-course-code').innerText = student.course_code;
+    document.getElementById('student-duration').innerText = student.duration;
+    document.getElementById('student-session').innerText = student.session;
+    document.getElementById('student-photo').src = student.photo;
+
+    const theoryBody = document.getElementById('theory-body');
+    const practicalBody = document.getElementById('practical-body');
+    theoryBody.innerHTML = '';
+    practicalBody.innerHTML = '';
+
+    student.subjects.forEach(sub => {
+        const row = `<tr>
+            <td>${sub.name}</td>
+            <td><input type="number" name="full[${sub.name}]" class="form-control" placeholder="Full Marks" required></td>
+            <td><input type="number" name="pass[${sub.name}]" class="form-control" placeholder="Pass Marks" required></td>
+            <td><input type="number" name="obtained[${sub.name}]" class="form-control" placeholder="Obtained Marks" required></td>
+            <input type="hidden" name="type[${sub.name}]" value="${sub.type}">
+        </tr>`;
+        if(sub.type === 'theory') theoryBody.innerHTML += row;
+        else if(sub.type === 'practical') practicalBody.innerHTML += row;
+    });
+
+    studentInfoDiv.style.display = 'block';
+    marksTableDiv.style.display = 'block';
+});
+</script>
+{% endblock %}

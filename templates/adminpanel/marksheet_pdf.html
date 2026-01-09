@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Marksheet - {{ marksheet.student.name }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        .section-title { font-weight: bold; margin-top: 15px; margin-bottom: 5px; }
+        .totals { font-weight: bold; }
+        .grand { margin-top: 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Marksheet</h2>
+    <p><strong>Name:</strong> {{ marksheet.student.name }}</p>
+    <p><strong>Father Name:</strong> {{ marksheet.student.father_name }}</p>
+    <p><strong>Roll No:</strong> {{ marksheet.student.roll_no }}</p>
+    <p><strong>Course:</strong> {{ marksheet.student.course.name }}</p>
+    <p><strong>Enrollment:</strong> {{ marksheet.student.enrollment_no }}</p>
+
+    <!-- Theory -->
+    <div class="section-title">Theory Marks</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Full Marks</th>
+                <th>Pass Marks</th>
+                <th>Obtained Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject, data in marksheet.marks.theory.items %}
+            <tr>
+                <td>{{ subject }}</td>
+                <td>{{ data.full }}</td>
+                <td>{{ data.pass }}</td>
+                <td>{{ data.obtained }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="totals">
+                <td>Total</td>
+                <td>{{ theory_total.full }}</td>
+                <td>{{ theory_total.pass }}</td>
+                <td>{{ theory_total.obtained }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Practical -->
+    <div class="section-title">Practical Marks</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Full Marks</th>
+                <th>Pass Marks</th>
+                <th>Obtained Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject, data in marksheet.marks.practical.items %}
+            <tr>
+                <td>{{ subject }}</td>
+                <td>{{ data.full }}</td>
+                <td>{{ data.pass }}</td>
+                <td>{{ data.obtained }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="totals">
+                <td>Total</td>
+                <td>{{ practical_total.full }}</td>
+                <td>{{ practical_total.pass }}</td>
+                <td>{{ practical_total.obtained }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Grand Total -->
+    <div class="grand">
+        <strong>Grand Total:</strong> {{ grand_total }} / {{ grand_full }} &nbsp;&nbsp;
+        <strong>Percentage:</strong> {{ percentage }}% &nbsp;&nbsp;
+        <strong>Division:</strong> {{ division }}
+    </div>
+</body>
+</html>
