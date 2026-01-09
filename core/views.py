@@ -809,35 +809,44 @@ def download_marksheet(request, enrollment_no):
 
     center = Center.objects.filter(is_active=True).first()
 
-    # logos
+    # Logos
     left_logo_path = os.path.join(settings.BASE_DIR, 'static/images/logo.png')
     right_logo_path = os.path.join(settings.BASE_DIR, 'static/images/right_logo.png')
 
     left_logo_url = left_logo_path.replace('\\', '/')
     right_logo_url = right_logo_path.replace('\\', '/')
 
-    # totals
-    theory_full = theory_obt = 0
-    practical_full = practical_obt = 0
+    # Totals calculation
+    theory_full = theory_pass = theory_obt = 0
+    practical_full = practical_pass = practical_obt = 0
 
+    # Theory totals
     if marksheet.marks.get('theory'):
         for v in marksheet.marks['theory'].values():
             theory_full += int(v.get('full', 0))
+            theory_pass += int(v.get('pass', 0))
             theory_obt += int(v.get('obtained', 0))
 
+    # Practical totals
     if marksheet.marks.get('practical'):
         for v in marksheet.marks['practical'].values():
             practical_full += int(v.get('full', 0))
+            practical_pass += int(v.get('pass', 0))
             practical_obt += int(v.get('obtained', 0))
 
+    # Grand totals
     grand_full = theory_full + practical_full
+    grand_pass = theory_pass + practical_pass
     grand_total = theory_obt + practical_obt
     percentage = round((grand_total / grand_full) * 100, 2) if grand_full else 0
 
+    # Division
     if percentage >= 60:
         division = "First"
     elif percentage >= 45:
         division = "Second"
+    elif percentage >= 33:
+        division = "Third"
     else:
         division = "Fail"
 
@@ -846,10 +855,13 @@ def download_marksheet(request, enrollment_no):
         'marksheet': marksheet,
         'center': center,
         'theory_full': theory_full,
+        'theory_pass': theory_pass,           # ✅ Pass total added
         'theory_obt': theory_obt,
         'practical_full': practical_full,
+        'practical_pass': practical_pass,     # ✅ Pass total added
         'practical_obt': practical_obt,
         'grand_full': grand_full,
+        'grand_pass': grand_pass,             # ✅ Grand pass total
         'grand_total': grand_total,
         'percentage': percentage,
         'division': division,
