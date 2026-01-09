@@ -93,15 +93,32 @@
                     - <a href="{{ item.marksheet.file.url }}" target="_blank">Download File</a>
                 {% endif %}
             </div>
-            <div>
-                <a href="{% url 'marksheet_edit' item.marksheet.id %}" class="btn btn-sm btn-primary">Edit</a>
-                <form action="{% url 'marksheet_delete' item.marksheet.id %}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this marksheet?');">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                </form>
+            <div class="d-flex gap-2 align-items-center">
+    <!-- Edit -->
+    <a href="{% url 'marksheet_edit' item.marksheet.id %}"
+       class="btn btn-sm btn-primary">
+        Edit
+    </a>
 
-                
-            </div>
+    <!-- Delete -->
+    <form action="{% url 'marksheet_delete' item.marksheet.id %}"
+          method="POST"
+          style="display:inline;"
+          onsubmit="return confirm('Are you sure you want to delete this marksheet?');">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-danger">
+            Delete
+        </button>
+    </form>
+
+    <!-- PDF Download -->
+    <a href="{% url 'download_marksheet' item.marksheet.student.enrollment_no %}"
+       class="btn btn-sm btn-success"
+       title="Download Marksheet PDF">
+         PDF
+    </a>
+</div>
+
         </div>
 
         <div class="card-body">

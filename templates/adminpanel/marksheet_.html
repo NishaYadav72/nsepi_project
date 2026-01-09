@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Marksheet</title>
+
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: DejaVu Sans;
+            font-size: 12px;
+        }
+
+        .box {
+            border: 1px solid #000;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: center;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+
+        .label {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .no-border td {
+            border: none;
+            text-align: left;
+            padding: 4px;
+        }
+
+        .right {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="title">MARKSHEET</div>
+<div class="subtitle">National Skill Empowerment Program of India</div>
+
+<!-- STUDENT INFO -->
+<div class="box">
+    <table class="no-border">
+        <tr>
+            <td class="label">Student Name:</td>
+            <td>{{ student.name }}</td>
+            <td class="label">Enrollment No:</td>
+            <td>{{ student.enrollment_no }}</td>
+        </tr>
+        <tr>
+            <td class="label">Father Name:</td>
+            <td>{{ student.father_name }}</td>
+            <td class="label">Roll No:</td>
+            <td>{{ student.roll_no }}</td>
+        </tr>
+        <tr>
+            <td class="label">Course:</td>
+            <td>{{ student.course.name }}</td>
+            <td class="label">Session:</td>
+            <td>{{ student.session }}</td>
+        </tr>
+    </table>
+</div>
+
+<!-- THEORY MARKS -->
+<div class="box">
+    <b>Theory Marks</b>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Full Marks</th>
+            <th>Pass Marks</th>
+            <th>Obtained Marks</th>
+        </tr>
+
+        {% for subject, data in marksheet.marks.theory.items %}
+        <tr>
+            <td>{{ subject }}</td>
+            <td>{{ data.full }}</td>
+            <td>{{ data.pass }}</td>
+            <td>{{ data.obtained }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!-- PRACTICAL MARKS -->
+<div class="box">
+    <b>Practical Marks</b>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Full Marks</th>
+            <th>Pass Marks</th>
+            <th>Obtained Marks</th>
+        </tr>
+
+        {% for subject, data in marksheet.marks.practical.items %}
+        <tr>
+            <td>{{ subject }}</td>
+            <td>{{ data.full }}</td>
+            <td>{{ data.pass }}</td>
+            <td>{{ data.obtained }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!-- RESULT SUMMARY -->
+<div class="box">
+    <table>
+        <tr>
+            <th>Grand Total</th>
+            <th>Percentage</th>
+            <th>Division</th>
+        </tr>
+        <tr>
+            <td>{{ grand_total }} / {{ grand_full }}</td>
+            <td>{{ percentage }}%</td>
+            <td>{{ division }}</td>
+        </tr>
+    </table>
+</div>
+
+<!-- FOOTER -->
+<div style="margin-top:40px;">
+    <table class="no-border">
+        <tr>
+            <td>Date: {{ marksheet.uploaded_at|date:"d-m-Y" }}</td>
+            <td class="right">Authorized Signature</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

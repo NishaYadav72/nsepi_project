@@ -127,28 +127,20 @@ table{
 <td width="15%"><img src="{{ right_logo_url }}"></td>
 </tr>
 </table>
-
 <div class="title">ADMISSION RECEIPT</div>
 
-<div class="box">
-<table>
-<tr>
-<td>
-    <span style="color: blue; font-weight: bold;">
-        Enrollment No: {{ student.enrollment_no }}
-    </span><br>
-    <span style="color: blue; font-weight: bold;">
-        Roll No: {{ student.roll_no }}
-    </span>
-</td>
-<td align="right">
-    <span style="color: blue; font-weight: bold;">
-        Date: {{ student.created_at|date:"d-m-Y" }}
-    </span>
-</td>
-</tr>
-</table>
+
+
+
+<!-- Enrollment Information Box -->
+<div class="box" style="border:1px solid #000; padding:8px; margin-top:8px;">
+    <div style="line-height:1.4;">
+        <span><b style="color: blue;">Enrollment No:</b> <span style="color: blue;">{{ student.enrollment_no }}</span></span><br>
+        <span><b style="color: blue;">Roll No:</b> <span style="color: blue;">{{ student.roll_no }}</span></span><br>
+        <span style="float:right;"><b style="color: blue; text-align:right;">Date:</b> <span style="color: blue; text-align:right;">{{ student.created_at|date:"d-m-Y" }}</span></span>
+    </div>
 </div>
+<!-- Enrollment Information Box -->
 
 
 <!-- Student Information Box -->
@@ -156,7 +148,7 @@ table{
     <div style="line-height:1.2;">
         <b style="color: green; font-size: 20px;">Student Information</b> <br> <br>
 
-        <b>Student Name:</b> {{ student.name }}<br>
+        <b>Student Name:</b>  <span style="text-align: center;">{{ student.name }} </span> <br>
         <b>Father Name:</b> {{ student.father_name }}<br>
         <b>Address:</b> {{ student.address }}
     </div>

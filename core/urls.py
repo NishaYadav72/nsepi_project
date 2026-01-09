@@ -106,6 +106,11 @@ path('download-receipt/<int:student_id>/', views.download_admission_receipt, nam
 path('marksheet/add/', views.add_marksheet, name='add_marksheet'),
 path('marksheet/edit/<int:pk>/', views.edit_marksheet, name='marksheet_edit'),
 path('marksheet/delete/<int:pk>/', views.delete_marksheet, name='marksheet_delete'),
+path(
+    'download-marksheet/<path:enrollment_no>/',
+    views.download_marksheet,
+    name='download_marksheet'
+),
 
 path('logout/', views.admin_logout, name='logout'),
 

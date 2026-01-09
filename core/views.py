@@ -792,7 +792,84 @@ def delete_marksheet(request, pk):
 
 
 
+@login_required
+def download_marksheet(request, enrollment_no):
 
+    student = get_object_or_404(Student, enrollment_no=enrollment_no)
+
+    marksheet = (
+        Marksheet.objects
+        .filter(student=student)
+        .order_by('-uploaded_at')
+        .first()
+    )
+
+    if not marksheet:
+        return HttpResponse("No marksheet found")
+
+    center = Center.objects.filter(is_active=True).first()
+
+    # logos
+    left_logo_path = os.path.join(settings.BASE_DIR, 'static/images/logo.png')
+    right_logo_path = os.path.join(settings.BASE_DIR, 'static/images/right_logo.png')
+
+    left_logo_url = left_logo_path.replace('\\', '/')
+    right_logo_url = right_logo_path.replace('\\', '/')
+
+    # totals
+    theory_full = theory_obt = 0
+    practical_full = practical_obt = 0
+
+    if marksheet.marks.get('theory'):
+        for v in marksheet.marks['theory'].values():
+            theory_full += int(v.get('full', 0))
+            theory_obt += int(v.get('obtained', 0))
+
+    if marksheet.marks.get('practical'):
+        for v in marksheet.marks['practical'].values():
+            practical_full += int(v.get('full', 0))
+            practical_obt += int(v.get('obtained', 0))
+
+    grand_full = theory_full + practical_full
+    grand_total = theory_obt + practical_obt
+    percentage = round((grand_total / grand_full) * 100, 2) if grand_full else 0
+
+    if percentage >= 60:
+        division = "First"
+    elif percentage >= 45:
+        division = "Second"
+    else:
+        division = "Fail"
+
+    context = {
+        'student': student,
+        'marksheet': marksheet,
+        'center': center,
+        'theory_full': theory_full,
+        'theory_obt': theory_obt,
+        'practical_full': practical_full,
+        'practical_obt': practical_obt,
+        'grand_full': grand_full,
+        'grand_total': grand_total,
+        'percentage': percentage,
+        'division': division,
+        'left_logo_url': left_logo_url,
+        'right_logo_url': right_logo_url,
+    }
+
+    html = render_to_string('adminpanel/marksheet.html', context)
+
+    result = BytesIO()
+    pdf = pisa.CreatePDF(html, dest=result)
+
+    if pdf.err:
+        return HttpResponse("PDF generation error")
+
+    response = HttpResponse(result.getvalue(), content_type='application/pdf')
+    response['Content-Disposition'] = (
+        f'attachment; filename="Marksheet_{student.enrollment_no}.pdf"'
+    )
+    return response
 
 
 from django.http import JsonResponse
