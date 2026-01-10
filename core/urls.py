@@ -17,6 +17,8 @@ path('student/register/', views.student_register, name='student_register'),
     path('student/admit-card/', views.admit_card, name='admit_card'),
     path('student/verify-certificate/', views.verify_certificate, name='verify_certificate'),
     path('student/result/', views.student_result, name='student_result'),
+
+
     path('placements/', views.placements, name='placements'),
     path('branches/', views.branches, name='branches'),
     path('contact/', views.contact, name='contact'),
@@ -106,11 +108,10 @@ path('download-receipt/<int:student_id>/', views.download_admission_receipt, nam
 path('marksheet/add/', views.add_marksheet, name='add_marksheet'),
 path('marksheet/edit/<int:pk>/', views.edit_marksheet, name='marksheet_edit'),
 path('marksheet/delete/<int:pk>/', views.delete_marksheet, name='marksheet_delete'),
-path(
-    'download-marksheet/<path:enrollment_no>/',
-    views.download_marksheet,
-    name='download_marksheet'
-),
+# urls.py
+# urls.py
+path('marksheet/pdf/<path:enroll>/<year>/', views.download_marksheet, name='download_marksheet'),
+
 
 path('logout/', views.admin_logout, name='logout'),
 

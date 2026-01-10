@@ -13,16 +13,24 @@ class Course(models.Model):
 
 
 class Subject(models.Model):
+
+    YEAR_CHOICES = (
+        ('first', 'First Year'),
+        ('second', 'Second Year'),
+    )
+
     TYPE_CHOICES = (
         ('theory', 'Theory'),
         ('practical', 'Practical'),
     )
+
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    year = models.CharField(max_length=10, choices=YEAR_CHOICES)
 
     def __str__(self):
-        return f"{self.name} ({self.course.name})"
+        return f"{self.name} ({self.course.name}) - {self.get_year_display()}"
 
 class Center(models.Model):
     name = models.CharField(max_length=200)
@@ -110,12 +118,16 @@ class Student(models.Model):
 
 
 class Marksheet(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='marksheets')
-    marks = models.JSONField(default=dict)  # {"Theory": {"Math": 90}, "Practical": {"Physics Lab": 85}}
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    marks = models.JSONField()
+    file = models.FileField(upload_to='marksheets/', blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(upload_to='marksheets/', null=True, blank=True)  # <-- new field
+
+    YEAR_CHOICES = (
+        ('first', 'First Year'),
+        ('second', 'Second Year'),
+    )
+    year = models.CharField(max_length=10, choices=YEAR_CHOICES, default='first')  # ✅ add this
 
     def __str__(self):
-        return f"{self.student.name} - Marksheet {self.id}"
-
-
+        return f"{self.student.name} - {self.get_year_display()} Marks"

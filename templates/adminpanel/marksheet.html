@@ -141,7 +141,7 @@ th {
 
 
 <td width="15%"><img src="{{ right_logo_url }}"></td>
-</table>
+</table> 
 
 
 <style>
@@ -162,6 +162,23 @@ th {
     display:inline-block;
 }
 </style>
+
+
+<td width="15%" style="text-align:center;">
+    <!-- Year-based heading below right logo -->
+    <div style="margin-top:5px; font-weight:bold; font-size:16px; text-align: center;">
+        {% if marksheet.year == 'first' %}
+            Provisional Mark Sheet - 1st Year
+        {% elif marksheet.year == 'second' %}
+            Provisional Mark Sheet - 2nd Year
+        {% else %}
+            Provisional Mark Sheet
+        {% endif %}
+    </div>
+</td>
+</tr>
+</table>
+
 
 
 <table class="info-box-table">

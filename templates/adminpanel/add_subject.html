@@ -30,6 +30,21 @@
             </select>
         </div>
 
+
+        <div class="col-md-4">
+    <label>Year</label><br>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="year[]" value="first" id="firstYear">
+        <label class="form-check-label" for="firstYear">First Year</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="year[]" value="second" id="secondYear">
+        <label class="form-check-label" for="secondYear">Second Year</label>
+    </div>
+</div>
+
+
         <!-- Theory Subjects -->
         <div class="col-md-6">
             <label>Theory Subjects</label>
@@ -57,40 +72,146 @@
         </div>
     </form>
 
-    <hr>
+   <hr>
 
-    <h4>Subjects List</h4>
+<h3 class="mt-4 text-primary">First Year Subjects</h3>
 
-    <table class="table table-bordered mt-3">
-        <thead class="table-dark">
-            <tr>
-                <th>#</th>
-                <th>Course</th>
-                <th>Subject</th>
-                <th>Type</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for subject in subjects %}
+<!-- FIRST YEAR THEORY -->
+<h5 class="mt-3">Theory</h5>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Subject</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in first_year_subjects %}
+            {% if subject.type == 'theory' %}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ subject.course.name }}</td>
                 <td>{{ subject.name }}</td>
-                <td>{{ subject.type|title }}</td>
                 <td>
                     <a href="{% url 'edit_subject' subject.id %}" class="btn btn-warning btn-sm">Edit</a>
                     <a href="{% url 'delete_subject' subject.id %}" class="btn btn-danger btn-sm"
                        onclick="return confirm('Delete subject?')">Delete</a>
                 </td>
             </tr>
-            {% empty %}
+            {% endif %}
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">No Theory Subjects</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- FIRST YEAR PRACTICAL -->
+<h5 class="mt-4">Practical</h5>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Subject</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in first_year_subjects %}
+            {% if subject.type == 'practical' %}
             <tr>
-                <td colspan="5" class="text-center">No subjects added yet</td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ subject.course.name }}</td>
+                <td>{{ subject.name }}</td>
+                <td>
+                    <a href="{% url 'edit_subject' subject.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_subject' subject.id %}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete subject?')">Delete</a>
+                </td>
             </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            {% endif %}
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">No Practical Subjects</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+
+<h3 class="mt-4 text-success">Second Year Subjects</h3>
+
+<!-- SECOND YEAR THEORY -->
+<h5 class="mt-3">Theory</h5>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Subject</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in second_year_subjects %}
+            {% if subject.type == 'theory' %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ subject.course.name }}</td>
+                <td>{{ subject.name }}</td>
+                <td>
+                    <a href="{% url 'edit_subject' subject.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_subject' subject.id %}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete subject?')">Delete</a>
+                </td>
+            </tr>
+            {% endif %}
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">No Theory Subjects</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- SECOND YEAR PRACTICAL -->
+<h5 class="mt-4">Practical</h5>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Subject</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in second_year_subjects %}
+            {% if subject.type == 'practical' %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ subject.course.name }}</td>
+                <td>{{ subject.name }}</td>
+                <td>
+                    <a href="{% url 'edit_subject' subject.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_subject' subject.id %}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete subject?')">Delete</a>
+                </td>
+            </tr>
+            {% endif %}
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">No Practical Subjects</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 </div>
 
 <!-- JS to handle add/remove fields -->

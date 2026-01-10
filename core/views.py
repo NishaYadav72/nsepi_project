@@ -82,8 +82,89 @@ def admit_card(request):
 def verify_certificate(request):
     return render(request, 'verify_certificate.html')
 
+
 def student_result(request):
-    return render(request, 'student/result.html')
+    marksheet = None
+    error = None
+
+    if request.method == "POST":
+        enrollment = request.POST.get("enrollmentId")
+        year = request.POST.get("term")
+
+        try:
+            student = Student.objects.get(enrollment_no=enrollment)
+            marksheet = Marksheet.objects.get(student=student, year=year)
+
+            # ===== THEORY TOTALS =====
+            theory_full = 0
+            theory_pass = 0
+            theory_obtained = 0
+
+            for data in marksheet.marks.get("theory", {}).values():
+                theory_full += data.get("full", 0)
+                theory_pass += data.get("pass", 0)
+                theory_obtained += data.get("obtained", 0)
+
+            # ===== PRACTICAL TOTALS =====
+            practical_full = 0
+            practical_pass = 0
+            practical_obtained = 0
+
+            for data in marksheet.marks.get("practical", {}).values():
+                practical_full += data.get("full", 0)
+                practical_pass += data.get("pass", 0)
+                practical_obtained += data.get("obtained", 0)
+
+            # ===== GRAND TOTALS =====
+            total_full = theory_full + practical_full
+            total_pass = theory_pass + practical_pass
+            total_obtained = theory_obtained + practical_obtained
+
+            # ===== PERCENTAGE =====
+            percentage = round((total_obtained / total_full) * 100, 2) if total_full > 0 else 0
+
+            # ===== FAIL CHECK =====
+            theory_fail = any(data["obtained"] < data["pass"] for data in marksheet.marks.get("theory", {}).values())
+            practical_fail = any(data["obtained"] < data["pass"] for data in marksheet.marks.get("practical", {}).values())
+
+            # ===== DIVISION =====
+            if theory_fail or practical_fail:
+                division = "Fail"
+            else:
+                if percentage >= 60:
+                    division = "First"
+                elif percentage >= 45:
+                    division = "Second"
+                elif percentage >= 33:
+                    division = "Third"
+                else:
+                    division = "Fail"
+
+            # ===== SEND TO TEMPLATE =====
+            marksheet.theory_full = theory_full
+            marksheet.theory_pass = theory_pass
+            marksheet.theory_obtained = theory_obtained
+
+            marksheet.practical_full = practical_full
+            marksheet.practical_pass = practical_pass
+            marksheet.practical_obtained = practical_obtained
+
+            marksheet.total_full = total_full
+            marksheet.total_pass = total_pass
+            marksheet.total_obtained = total_obtained
+            marksheet.percentage = percentage
+            marksheet.division = division
+
+        except Student.DoesNotExist:
+            error = "Invalid Enrollment Number"
+        except Marksheet.DoesNotExist:
+            error = "Result not found"
+
+    return render(request, "student/result.html", {
+        "marksheet": marksheet,
+        "error": error
+    })
+
 
 
 def placements(request):
@@ -372,71 +453,111 @@ def activate_center(request, id):
 @login_required
 def add_subject(request):
     courses = Course.objects.all().order_by('name')
-    subjects = Subject.objects.select_related('course').order_by('-id')
+
+    # 🔹 Separate data for display
+    first_year_subjects = Subject.objects.select_related('course') \
+        .filter(year='first').order_by('-id')
+
+    second_year_subjects = Subject.objects.select_related('course') \
+        .filter(year='second').order_by('-id')
 
     if request.method == "POST":
         course_id = request.POST.get('course')
+        years = request.POST.getlist('year[]')
         theory_names = request.POST.getlist('theory_subjects[]')
         practical_names = request.POST.getlist('practical_subjects[]')
 
-        # 🔒 Basic validation
+        # ===============================
+        # 🔒 VALIDATION
+        # ===============================
         if not course_id:
             messages.error(request, "Please select a course.")
             return redirect('add_subject')
 
-        if not any(theory_names) and not any(practical_names):
+        if not years:
+            messages.error(request, "Please select at least one year.")
+            return redirect('add_subject')
+
+        if not any(name.strip() for name in theory_names + practical_names):
             messages.error(request, "Please enter at least one subject.")
             return redirect('add_subject')
 
         course = get_object_or_404(Course, id=course_id)
-
-        # ==================================================
-        # 🔹 ADD THEORY SUBJECTS
-        # ==================================================
         added_count = 0
-        for name in theory_names:
-            name = name.strip()
-            if not name:
-                continue
-            if Subject.objects.filter(course=course, name__iexact=name, type='theory').exists():
-                messages.warning(
-                    request,
-                    f"'{name}' already exists in course '{course.name}' (Theory)."
-                )
-            else:
-                Subject.objects.create(course=course, name=name, type='theory')
-                added_count += 1
 
-        # ==================================================
-        # 🔹 ADD PRACTICAL SUBJECTS
-        # ==================================================
-        for name in practical_names:
-            name = name.strip()
-            if not name:
-                continue
-            if Subject.objects.filter(course=course, name__iexact=name, type='practical').exists():
-                messages.warning(
-                    request,
-                    f"'{name}' already exists in course '{course.name}' (Practical)."
-                )
-            else:
-                Subject.objects.create(course=course, name=name, type='practical')
-                added_count += 1
+        # ===============================
+        # 🔹 LOOP YEAR WISE
+        # ===============================
+        for year in years:
+
+            # -------- THEORY SUBJECTS --------
+            for name in theory_names:
+                name = name.strip()
+                if not name:
+                    continue
+
+                if Subject.objects.filter(
+                    course=course,
+                    name__iexact=name,
+                    type='theory',
+                    year=year
+                ).exists():
+                    messages.warning(
+                        request,
+                        f"'{name}' already exists in {course.name} "
+                        f"({year.title()} Year - Theory)"
+                    )
+                else:
+                    Subject.objects.create(
+                        course=course,
+                        name=name,
+                        type='theory',
+                        year=year
+                    )
+                    added_count += 1
+
+            # -------- PRACTICAL SUBJECTS --------
+            for name in practical_names:
+                name = name.strip()
+                if not name:
+                    continue
+
+                if Subject.objects.filter(
+                    course=course,
+                    name__iexact=name,
+                    type='practical',
+                    year=year
+                ).exists():
+                    messages.warning(
+                        request,
+                        f"'{name}' already exists in {course.name} "
+                        f"({year.title()} Year - Practical)"
+                    )
+                else:
+                    Subject.objects.create(
+                        course=course,
+                        name=name,
+                        type='practical',
+                        year=year
+                    )
+                    added_count += 1
 
         if added_count:
-            messages.success(request, f"{added_count} subject(s) added successfully!")
+            messages.success(
+                request,
+                f"{added_count} subject(s) added successfully!"
+            )
 
         return redirect('add_subject')
 
-    # ==================================================
+    # ===============================
     # 🔹 GET REQUEST
-    # ==================================================
+    # ===============================
     return render(request, 'adminpanel/add_subject.html', {
         'courses': courses,
-        'subjects': subjects,
+        'first_year_subjects': first_year_subjects,
+        'second_year_subjects': second_year_subjects,
     })
-
-
 @login_required
 def delete_subject(request, id):
     subject = get_object_or_404(Subject, id=id)
@@ -651,63 +772,77 @@ def download_admission_receipt(request, student_id):
 
 @login_required
 def add_marksheet(request):
+    # ===== GET STUDENTS & EXISTING MARKSHEETS =====
     students = Student.objects.select_related('course').all().order_by('roll_no')
     saved_marksheets = Marksheet.objects.select_related('student').order_by('-id')
 
     marksheets_with_totals = []
+
     for m in saved_marksheets:
         marks = m.marks
         theory_total = {'full': 0, 'pass': 0, 'obtained': 0}
         practical_total = {'full': 0, 'pass': 0, 'obtained': 0}
 
-        # Calculate totals
+        # ===== CALCULATE THEORY TOTALS =====
         for data in marks.get('theory', {}).values():
             theory_total['full'] += data.get('full', 0)
             theory_total['pass'] += data.get('pass', 0)
             theory_total['obtained'] += data.get('obtained', 0)
 
+        # ===== CALCULATE PRACTICAL TOTALS =====
         for data in marks.get('practical', {}).values():
             practical_total['full'] += data.get('full', 0)
             practical_total['pass'] += data.get('pass', 0)
             practical_total['obtained'] += data.get('obtained', 0)
 
-        # Grand total
+        # ===== GRAND TOTALS =====
         grand_full = theory_total['full'] + practical_total['full']
-        grand_pass = theory_total['pass'] + practical_total['pass']
         grand_obtained = theory_total['obtained'] + practical_total['obtained']
 
-        # Percentage
+        # ===== PERCENTAGE =====
         percentage = (grand_obtained / grand_full * 100) if grand_full > 0 else 0
 
-        # Division
-        if percentage >= 60:
-            division = "First"
-        elif percentage >= 45:
-            division = "Second"
-        elif percentage >= 33:
-            division = "Third"
-        else:
-            division = "Fail"
+        # ===== FAIL CHECK =====
+        theory_fail = any(data['obtained'] < data['pass'] for data in marks.get('theory', {}).values())
+        practical_fail = any(data['obtained'] < data['pass'] for data in marks.get('practical', {}).values())
 
+        # ===== DIVISION CALCULATION =====
+        if theory_fail or practical_fail:
+            division = "Fail"
+        else:
+            if percentage >= 60:
+                division = "First"
+            elif percentage >= 45:
+                division = "Second"
+            elif percentage >= 33:
+                division = "Third"
+            else:
+                division = "Fail"
+
+        # ===== ADD TO LIST FOR TEMPLATE =====
         marksheets_with_totals.append({
             'marksheet': m,
             'theory_total': theory_total,
             'practical_total': practical_total,
-            'grand_total': grand_obtained,
             'grand_full': grand_full,
+            'grand_obtained': grand_obtained,
             'percentage': round(percentage, 2),
-            'division': division
+            'division': division,
+            'year_display': m.get_year_display()
         })
 
+    # ===== HANDLE POST REQUEST (ADD NEW MARKSHEET) =====
     if request.method == "POST":
         roll_no = request.POST.get('roll_no')
-        if not roll_no:
-            messages.error(request, "Please select a student.")
+        year = request.POST.get('year')
+        if not roll_no or not year:
+            messages.error(request, "Please select a student and year.")
             return redirect('add_marksheet')
 
         student = get_object_or_404(Student, id=roll_no)
         marks_dict = {"theory": {}, "practical": {}}
 
+        # ===== COLLECT MARKS FROM FORM =====
         for key in request.POST:
             if key.startswith('obtained[') and key.endswith(']'):
                 sub_name = key[9:-1]
@@ -731,13 +866,15 @@ def add_marksheet(request):
 
         uploaded_file = request.FILES.get('file')
 
+        # ===== CREATE MARKSHEET =====
         Marksheet.objects.create(
             student=student,
             marks=marks_dict,
-            file=uploaded_file
+            file=uploaded_file,
+            year=year
         )
 
-        messages.success(request, f"Marksheet for {student.name} saved successfully!")
+        messages.success(request, f"Marksheet for {student.name} ({year}) saved successfully!")
         return redirect('add_marksheet')
 
     return render(request, 'adminpanel/add_marksheet.html', {
@@ -793,13 +930,13 @@ def delete_marksheet(request, pk):
 
 
 @login_required
-def download_marksheet(request, enrollment_no):
+def download_marksheet(request, enroll, year):
 
-    student = get_object_or_404(Student, enrollment_no=enrollment_no)
+    student = get_object_or_404(Student, enrollment_no=enroll)
 
     marksheet = (
         Marksheet.objects
-        .filter(student=student)
+        .filter(student=student, year=year)
         .order_by('-uploaded_at')
         .first()
     )
@@ -819,20 +956,33 @@ def download_marksheet(request, enrollment_no):
     # Totals calculation
     theory_full = theory_pass = theory_obt = 0
     practical_full = practical_pass = practical_obt = 0
+    fail_subject = False
 
     # Theory totals
-    if marksheet.marks.get('theory'):
-        for v in marksheet.marks['theory'].values():
-            theory_full += int(v.get('full', 0))
-            theory_pass += int(v.get('pass', 0))
-            theory_obt += int(v.get('obtained', 0))
+    for data in marksheet.marks.get('theory', {}).values():
+        f = int(data.get('full', 0))
+        p = int(data.get('pass', 0))
+        o = int(data.get('obtained', 0))
+
+        theory_full += f
+        theory_pass += p
+        theory_obt += o
+
+        if o < p:
+            fail_subject = True  # Any failed theory subject
 
     # Practical totals
-    if marksheet.marks.get('practical'):
-        for v in marksheet.marks['practical'].values():
-            practical_full += int(v.get('full', 0))
-            practical_pass += int(v.get('pass', 0))
-            practical_obt += int(v.get('obtained', 0))
+    for data in marksheet.marks.get('practical', {}).values():
+        f = int(data.get('full', 0))
+        p = int(data.get('pass', 0))
+        o = int(data.get('obtained', 0))
+
+        practical_full += f
+        practical_pass += p
+        practical_obt += o
+
+        if o < p:
+            fail_subject = True  # Any failed practical subject
 
     # Grand totals
     grand_full = theory_full + practical_full
@@ -840,28 +990,31 @@ def download_marksheet(request, enrollment_no):
     grand_total = theory_obt + practical_obt
     percentage = round((grand_total / grand_full) * 100, 2) if grand_full else 0
 
-    # Division
-    if percentage >= 60:
-        division = "First"
-    elif percentage >= 45:
-        division = "Second"
-    elif percentage >= 33:
-        division = "Third"
-    else:
+    # Division calculation with fail check
+    if fail_subject:
         division = "Fail"
+    else:
+        if percentage >= 60:
+            division = "First"
+        elif percentage >= 45:
+            division = "Second"
+        elif percentage >= 33:
+            division = "Third"
+        else:
+            division = "Fail"
 
     context = {
         'student': student,
         'marksheet': marksheet,
         'center': center,
         'theory_full': theory_full,
-        'theory_pass': theory_pass,           # ✅ Pass total added
+        'theory_pass': theory_pass,
         'theory_obt': theory_obt,
         'practical_full': practical_full,
-        'practical_pass': practical_pass,     # ✅ Pass total added
+        'practical_pass': practical_pass,
         'practical_obt': practical_obt,
         'grand_full': grand_full,
-        'grand_pass': grand_pass,             # ✅ Grand pass total
+        'grand_pass': grand_pass,
         'grand_total': grand_total,
         'percentage': percentage,
         'division': division,
@@ -882,7 +1035,6 @@ def download_marksheet(request, enrollment_no):
         f'attachment; filename="Marksheet_{student.enrollment_no}.pdf"'
     )
     return response
-
 
 from django.http import JsonResponse
 
